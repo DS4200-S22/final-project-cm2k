@@ -8,7 +8,7 @@ const yTooltipOffset = 15;
 
 // Creates a smaller svg window in the hard coded bar div
 const svg1 = d3
-  .select("vis-container")
+  .select("#vis-container")
   .append("svg")
   .attr("width", width-margin.left-margin.right)
   .attr("height", height - margin.top - margin.bottom)
