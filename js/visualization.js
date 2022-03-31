@@ -6,7 +6,7 @@ const height = 450;
 const margin = {left:50, right:50, bottom:50, top:50}; 
 const yTooltipOffset = 15; 
 
-// Creates a smaller svg window in the hard coded bar div
+// Creates an svg window for the bar chart
 const svg1 = d3
   .select("#vis-container")
   .append("svg")
