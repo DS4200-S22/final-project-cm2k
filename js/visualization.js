@@ -117,7 +117,8 @@ svg2.append("g")
 
 
 svg2.append("path")
-    .data(data)
+    .data(d1)
+    .attr("class", "line")
     .attr('fill', 'none')
     .attr('stroke', 'red')
     .attr('stroke-width', 2)
