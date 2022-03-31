@@ -33,6 +33,10 @@ function(d){
 
 
 var parser = d3.timeParse("%Y-%m-%d")
+var hardCodeData = [8500000, 4200000, 6900000, 1100000, 1234567, 8765432, 6666666, 7172002,
+    8500000, 4200000, 6900000, 1100000, 1234567, 8765432, 6666666, 7172002,
+    8500000, 4200000, 6900000, 1100000, 1234567, 8765432, 6666666, 7172002,
+    3331222]
 
 xKey1 = "date";
 yKey1 = "cases";
@@ -64,8 +68,6 @@ svg1.append("g")
 svg1.append("g")
     .attr("transform", `translate(0,${height - margin.bottom})`) 
     .call(d3.axisBottom(xScale1)
-            // .tickFormat(d3.timeFormat("%Y-%m-%d")))
-            // .tickFormat(i => data[i].d3.timeFormat("%Y-%m-%d")))
             .tickFormat(i => data[i][xKey1]))
     .attr("font-size", '10px'); 
     
@@ -74,12 +76,11 @@ svg1.selectAll(".bar")
   .enter()
   .append("rect") 
   .attr("class", "bar") 
-  .attr("x", (d) => xScale1(d[xKey1])) 
-  .attr("y", (d) => yScale1(d[yKey1])) 
+  .attr("x", 55) 
+  .attr("y", function(d) {return yScale1(d.cases);}) 
   .attr("height", (d) => (height - margin.bottom) - yScale1(d[yKey1]))
+//   .attr("y", (d) => yScale1(d[yKey1])) 
   .attr("width", xScale1.bandwidth()) 
-
-
 
 // const svg2 = d3
 //   .select("#vis-container")
