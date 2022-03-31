@@ -34,6 +34,7 @@ function(d){
 
 var parser = d3.timeParse("%Y-%m-%d")
 
+// hard code data
 const d1 = [{date: "2020-01-21", cases:8500000},
 {date: "2020-01-21", cases:4200000}, {date: "2020-01-21", cases:6900000},
 {date: "2020-01-21", cases:1100000}, {date: "2020-01-21", cases:1234567},
@@ -80,49 +81,49 @@ svg1.selectAll(".bar")
   .append("rect") 
   .attr("class", "bar") 
   .attr("x", (d, i) => xScale1(i)) 
-    .attr("y", (d) => yScale1(d[yKey1])) 
-//   .attr("y", function(d, i) {return data[i][yKey1];}) 
+  .attr("y", (d) => yScale1(d[yKey1])) 
   .attr("height", (d) => (height - margin.bottom) - yScale1(d[yKey1]))
   .attr("width", xScale1.bandwidth()) 
 
-// const svg2 = d3
-//   .select("#vis-container")
-//   .append("svg")
-//   .attr("width", width-margin.left-margin.right)
-//   .attr("height", height - margin.top - margin.bottom)
-//   .attr("viewBox", [0, 0, width, height]);
+const svg2 = d3
+  .select("#vis-container")
+  .append("svg")
+  .attr("width", width-margin.left-margin.right)
+  .attr("height", height - margin.top - margin.bottom)
+  .attr("viewBox", [0, 0, width, height]);
 
 // i think they should have the same scales right? Theyll b on top of each other? Except the x is linear instead of a badn
 
-// let xScale2 = d3.scaleLinear()
-//             .domain([minX1, maxX1])
-//             .range([margin.left, width - margin.right]);
+let xScale2 = d3.scaleLinear()
+            .domain(d3.range(10))
+            .range([margin.left, width - margin.right]);
 
-// let yScale2 = d3.scaleLinear()
-//             .domain([minY1,maxY1])
-//             .range([height-margin.bottom,margin.top]); 
-
-
-// svg2.append("g")
-// .attr("transform", `translate(${margin.left}, 0)`)  
-//    .call(d3.axisLeft(yScale2)) 
-//    .attr("font-size", '20px'); 
+let yScale2 = d3.scaleLinear()
+            .domain([minY1,maxY1])
+            .range([height-margin.bottom,margin.top]); 
 
 
-// svg2.append("g")
-// .attr("transform", `translate(0,${height - margin.bottom})`) 
-//     .call(d3.axisBottom(xScale2))
-//     .attr("font-size", '20px'); 
+svg2.append("g")
+.attr("transform", `translate(${margin.left}, 0)`)  
+   .call(d3.axisLeft(yScale2)) 
+   .attr("font-size", '20px'); 
 
 
-// svg2.append("path")
-//     .data(data)
-//     .attr('fill', 'none')
-//     .attr('stroke', 'red')
-//     .attr('stroke-width', 2)
-//     .attr('d', d3.line().x(function(d) { return x(d.date) })
-//         .y(function(d) { return y(d.value) })
-//         );
+svg2.append("g")
+.attr("transform", `translate(0,${height - margin.bottom})`) 
+    .call(d3.axisBottom(xScale2)
+    .tickFormat(i => data[i][xKey1]))
+    .attr("font-size", '20px'); 
+
+
+svg2.append("path")
+    .data(data)
+    .attr('fill', 'none')
+    .attr('stroke', 'red')
+    .attr('stroke-width', 2)
+    .attr('d', d3.line().x(function(d) { return x(d.date) })
+        .y(function(d) { return y(d.value) })
+        );
 })
 
 //   d3.csv('data/us-states-covid-data.csv', function(err, rows){
