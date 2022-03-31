@@ -95,7 +95,7 @@ const svg2 = d3
 // i think they should have the same scales right? Theyll b on top of each other? Except the x is linear instead of a badn
 
 let xScale2 = d3.scaleLinear()
-            .domain(d3.range(10))
+            .domain([0, 10])
             .range([margin.left, width - margin.right]);
 
 let yScale2 = d3.scaleLinear()
