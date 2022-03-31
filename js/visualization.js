@@ -91,7 +91,7 @@ const svg2 = d3
   .attr("width", width-margin.left-margin.right)
   .attr("height", height - margin.top - margin.bottom)
   .attr("viewBox", [0, 0, width, height]);
-  
+
 let xScale2 = d3.scaleLinear()
             .domain([0, 10])
             .range([margin.left, width - margin.right]);
@@ -121,8 +121,8 @@ svg2.append("path")
     .data(d1)
     .attr("class", "line")
     .style("fill", "none")
-    .style('stroke', 'red')
-    .style('stroke-width', 2)
+    .style("stroke", "blue")
+    .style("stroke-width", 2)
     .attr("transform", "translate(" + 200 + "," + 200 + ")")
     .attr('d', line);
  })
