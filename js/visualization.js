@@ -1,7 +1,7 @@
 
 
 // Set dimensions and margins for plots 
-const width = 900; 
+const width = 1500; 
 const height = 450; 
 const margin = {left:50, right:50, bottom:50, top:50}; 
 const yTooltipOffset = 15; 
@@ -17,20 +17,35 @@ const svg1 = d3
 
 // https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-states.csv
 // data/us-states-covid-data.csv
-d3.csv('https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-states.csv').then((data) => {
-  console.log(data);
+d3.csv('https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-states.csv',
+function(d){
+        return {
+            date : d.date,
+            state : d.state,
+            fips : +d.fips,
+            cases : +d.cases,
+            deaths : +d.deaths
+        };
+    }).then(function(data) {
+        for (i = 0; i < 10; i++) {
+            console.log(data[i]);
+        }
+
 
 var parser = d3.timeParse("%Y-%m-%d")
 
-xKey1 = "date"
-let minX1 = d3.min(data, (d) => {return parser(d[xKey1]);});
-let maxX1 = d3.max(data, (d) => {return parser(d[xKey1]);});
+xKey1 = "date";
+// let minX1 = d3.min(data, (d) => {return parser(d[xKey1]);});
+// let maxX1 = d3.max(data, (d) => {return parser(d[xKey1]);});
+let minX1 = parser("2021-10-03");
+let maxX1 = parser("2021-10-10");
+
 
 let minY1 = d3.min(data, function(d) { return d.cases; });
 let maxY1 = d3.max(data, function(d) { return d.cases; });
 
 let xScale1 = d3.scaleBand()
-            .domain([minX1, maxX1])
+            .domain(d3.range(25))
             .range([margin.left, width - margin.right])
             .padding(0.1);
             
@@ -38,28 +53,73 @@ let yScale1 = d3.scaleLinear()
             .domain([minY1,maxY1])
             .range([height-margin.bottom,margin.top]); 
 
-// x-axis markings
+// y-axis markings
 svg1.append("g")
    .attr("transform", `translate(${margin.left}, 0)`) 
    .call(d3.axisLeft(yScale1)) 
    .attr("font-size", '20px'); 
 
-// y-axis markings
+// x-axis markings
 svg1.append("g")
     .attr("transform", `translate(0,${height - margin.bottom})`) 
-    .call(d3.axisBottom(xScale1) 
-            .tickFormat(i => data[i].date))  
-    .attr("font-size", '20px'); 
+    .call(d3.axisBottom(xScale1)
+            // .tickFormat(d3.timeFormat("%Y-%m-%d")))
+            // .tickFormat(i => data[i].d3.timeFormat("%Y-%m-%d")))
+            //.tickFormat(i => data[i]["date"]))  
+            // .tickFormat(function(d) { return d.date; }))
+            .tickFormat(i => data[i]["date"]))
+    .attr("font-size", '10px'); 
     
 svg1.selectAll(".bar")
   .data(data)
   .enter()
   .append("rect") 
   .attr("class", "bar") 
-  .attr("x", (d,i) => xScale1(d)) 
+  .attr("x", (d,i) => xScale1(10+(i * 15))) 
   .attr("y", (d) => yScale1(d.cases)) 
   .attr("height", (d) => (height - margin.bottom) - yScale1(d.cases)) 
   .attr("width", xScale1.bandwidth()) 
+
+
+
+const svg2 = d3
+  .select("#vis-container")
+  .append("svg")
+  .attr("width", width-margin.left-margin.right)
+  .attr("height", height - margin.top - margin.bottom)
+  .attr("viewBox", [0, 0, width, height]);
+
+// i think they should have the same scales right? Theyll b on top of each other? Except the x is linear instead of a badn
+
+let xScale2 = d3.scaleLinear()
+            .domain([minX1, maxX1])
+            .range([margin.left, width - margin.right]);
+
+let yScale2 = d3.scaleLinear()
+            .domain([minY1,maxY1])
+            .range([height-margin.bottom,margin.top]); 
+
+
+svg2.append("g")
+.attr("transform", `translate(${margin.left}, 0)`)  
+   .call(d3.axisLeft(yScale2)) 
+   .attr("font-size", '20px'); 
+
+
+svg2.append("g")
+.attr("transform", `translate(0,${height - margin.bottom})`) 
+    .call(d3.axisBottom(xScale2))
+    .attr("font-size", '20px'); 
+
+
+svg2.append("path")
+    .data(data)
+    .attr('fill', 'none')
+    .attr('stroke', 'red')
+    .attr('stroke-width', 2)
+    .attr('d', d3.line().x(function(d) { return x(d.date) })
+        .y(function(d) { return y(d.value) })
+        );
 })
 
 //   d3.csv('data/us-states-covid-data.csv', function(err, rows){
@@ -167,4 +227,4 @@ svg1.selectAll(".bar")
 //                 .attr("width", x1.bandwidth())
 //                 .style("opacity", 0.5)
 //                 .style("fill", (d) => color(d.Day));
-// });
+// })
