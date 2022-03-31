@@ -33,10 +33,13 @@ function(d){
 
 
 var parser = d3.timeParse("%Y-%m-%d")
-var hardCodeData = [8500000, 4200000, 6900000, 1100000, 1234567, 8765432, 6666666, 7172002,
-    8500000, 4200000, 6900000, 1100000, 1234567, 8765432, 6666666, 7172002,
-    8500000, 4200000, 6900000, 1100000, 1234567, 8765432, 6666666, 7172002,
-    3331222]
+
+const d1 = [{date: "2020-01-21", cases:8500000},
+{date: "2020-01-21", cases:4200000}, {date: "2020-01-21", cases:6900000},
+{date: "2020-01-21", cases:1100000}, {date: "2020-01-21", cases:1234567},
+{date: "2020-01-21", cases:8765432}, {date: "2020-01-21", cases:6666666},
+{date: "2020-01-21", cases:7172002}, {date: "2020-01-21", cases:8500000},
+{date: "2020-01-21", cases:4200000}]
 
 xKey1 = "date";
 yKey1 = "cases";
@@ -50,7 +53,7 @@ let minY1 = d3.min(data, function(d) { return d.cases; });
 let maxY1 = d3.max(data, function(d) { return d.cases; });
 
 let xScale1 = d3.scaleBand()
-            .domain(d3.range(25))
+            .domain(d3.range(10))
             .range([margin.left, width - margin.right])
             .padding(0.1);
             
@@ -72,14 +75,14 @@ svg1.append("g")
     .attr("font-size", '10px'); 
     
 svg1.selectAll(".bar")
-  .data(data)
+  .data(d1)
   .enter()
   .append("rect") 
   .attr("class", "bar") 
-  .attr("x", 55) 
-  .attr("y", function(d) {return yScale1(d.cases);}) 
+  .attr("x", (d, i) => xScale1(i)) 
+    .attr("y", (d) => yScale1(d[yKey1])) 
+//   .attr("y", function(d, i) {return data[i][yKey1];}) 
   .attr("height", (d) => (height - margin.bottom) - yScale1(d[yKey1]))
-//   .attr("y", (d) => yScale1(d[yKey1])) 
   .attr("width", xScale1.bandwidth()) 
 
 // const svg2 = d3
