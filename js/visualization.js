@@ -35,6 +35,7 @@ function(d){
 var parser = d3.timeParse("%Y-%m-%d")
 
 xKey1 = "date";
+yKey1 = "cases";
 // let minX1 = d3.min(data, (d) => {return parser(d[xKey1]);});
 // let maxX1 = d3.max(data, (d) => {return parser(d[xKey1]);});
 let minX1 = parser("2021-10-03");
@@ -65,9 +66,7 @@ svg1.append("g")
     .call(d3.axisBottom(xScale1)
             // .tickFormat(d3.timeFormat("%Y-%m-%d")))
             // .tickFormat(i => data[i].d3.timeFormat("%Y-%m-%d")))
-            //.tickFormat(i => data[i]["date"]))  
-            // .tickFormat(function(d) { return d.date; }))
-            .tickFormat(i => data[i]["date"]))
+            .tickFormat(i => data[i][xKey1]))
     .attr("font-size", '10px'); 
     
 svg1.selectAll(".bar")
@@ -75,51 +74,51 @@ svg1.selectAll(".bar")
   .enter()
   .append("rect") 
   .attr("class", "bar") 
-  .attr("x", (d,i) => xScale1(10+(i * 15))) 
-  .attr("y", (d) => yScale1(d.cases)) 
-  .attr("height", (d) => (height - margin.bottom) - yScale1(d.cases)) 
+  .attr("x", (d) => xScale1(d[xKey1])) 
+  .attr("y", (d) => yScale1(d[yKey1])) 
+  .attr("height", (d) => (height - margin.bottom) - yScale1(d[yKey1]))
   .attr("width", xScale1.bandwidth()) 
 
 
 
-const svg2 = d3
-  .select("#vis-container")
-  .append("svg")
-  .attr("width", width-margin.left-margin.right)
-  .attr("height", height - margin.top - margin.bottom)
-  .attr("viewBox", [0, 0, width, height]);
+// const svg2 = d3
+//   .select("#vis-container")
+//   .append("svg")
+//   .attr("width", width-margin.left-margin.right)
+//   .attr("height", height - margin.top - margin.bottom)
+//   .attr("viewBox", [0, 0, width, height]);
 
 // i think they should have the same scales right? Theyll b on top of each other? Except the x is linear instead of a badn
 
-let xScale2 = d3.scaleLinear()
-            .domain([minX1, maxX1])
-            .range([margin.left, width - margin.right]);
+// let xScale2 = d3.scaleLinear()
+//             .domain([minX1, maxX1])
+//             .range([margin.left, width - margin.right]);
 
-let yScale2 = d3.scaleLinear()
-            .domain([minY1,maxY1])
-            .range([height-margin.bottom,margin.top]); 
-
-
-svg2.append("g")
-.attr("transform", `translate(${margin.left}, 0)`)  
-   .call(d3.axisLeft(yScale2)) 
-   .attr("font-size", '20px'); 
+// let yScale2 = d3.scaleLinear()
+//             .domain([minY1,maxY1])
+//             .range([height-margin.bottom,margin.top]); 
 
 
-svg2.append("g")
-.attr("transform", `translate(0,${height - margin.bottom})`) 
-    .call(d3.axisBottom(xScale2))
-    .attr("font-size", '20px'); 
+// svg2.append("g")
+// .attr("transform", `translate(${margin.left}, 0)`)  
+//    .call(d3.axisLeft(yScale2)) 
+//    .attr("font-size", '20px'); 
 
 
-svg2.append("path")
-    .data(data)
-    .attr('fill', 'none')
-    .attr('stroke', 'red')
-    .attr('stroke-width', 2)
-    .attr('d', d3.line().x(function(d) { return x(d.date) })
-        .y(function(d) { return y(d.value) })
-        );
+// svg2.append("g")
+// .attr("transform", `translate(0,${height - margin.bottom})`) 
+//     .call(d3.axisBottom(xScale2))
+//     .attr("font-size", '20px'); 
+
+
+// svg2.append("path")
+//     .data(data)
+//     .attr('fill', 'none')
+//     .attr('stroke', 'red')
+//     .attr('stroke-width', 2)
+//     .attr('d', d3.line().x(function(d) { return x(d.date) })
+//         .y(function(d) { return y(d.value) })
+//         );
 })
 
 //   d3.csv('data/us-states-covid-data.csv', function(err, rows){
