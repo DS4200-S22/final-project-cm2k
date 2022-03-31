@@ -91,9 +91,7 @@ const svg2 = d3
   .attr("width", width-margin.left-margin.right)
   .attr("height", height - margin.top - margin.bottom)
   .attr("viewBox", [0, 0, width, height]);
-
-// i think they should have the same scales right? Theyll b on top of each other? Except the x is linear instead of a badn
-
+  
 let xScale2 = d3.scaleLinear()
             .domain([0, 10])
             .range([margin.left, width - margin.right]);
@@ -110,22 +108,24 @@ svg2.append("g")
 
 
 svg2.append("g")
-.attr("transform", `translate(0,${height - margin.bottom})`) 
+    .attr("transform", `translate(0,${height - margin.bottom})`) 
     .call(d3.axisBottom(xScale2)
     .tickFormat(i => data[i][xKey1]))
     .attr("font-size", '20px'); 
 
+let line = d3.line()
+            .x(function(d, i) {return xScale2(i);})
+            .y(function(d) {return yScale2(d[yKey1]);})
 
 svg2.append("path")
     .data(d1)
     .attr("class", "line")
-    .attr('fill', 'none')
-    .attr('stroke', 'red')
-    .attr('stroke-width', 2)
-    .attr('d', d3.line().x(function(d) { return x(d.date) })
-        .y(function(d) { return y(d.value) })
-        );
-})
+    .style("fill", "none")
+    .style('stroke', 'red')
+    .style('stroke-width', 2)
+    .attr("transform", "translate(" + 200 + "," + 200 + ")")
+    .attr('d', line);
+ })
 
 //   d3.csv('data/us-states-covid-data.csv', function(err, rows){
 //     function unpack(rows, key) {

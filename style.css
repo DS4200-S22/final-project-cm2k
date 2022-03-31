@@ -26,3 +26,9 @@ h1, h2, h3 {
 	fill: red;
 }
 
+.line {
+	fill: none;
+	stroke: red;
+	stroke-width: 2;
+}
+
