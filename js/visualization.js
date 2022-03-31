@@ -34,7 +34,7 @@ d3.select("#vis-container")
             [0.8, 'rgb(117,107,177)'], [1, 'rgb(84,39,143)']
         ],
         colorbar: {
-            title: 'Cases',
+            title: 'COVID-19 Cases',
             thickness: 0.2
         },
         marker: {
