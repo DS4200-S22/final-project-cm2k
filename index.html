@@ -12,8 +12,10 @@
   <!-- CSS Styling -->
   <link rel='stylesheet' href='style.css'>
 
+  <script src='lib/d3.v6.1.1/d3.min.js'></script>
+
   <!-- Plotly -->
-  <script src="https://cdn.plot.ly/plotly-2.9.0.min.js"></script>
+  <!-- <script src="https://cdn.plot.ly/plotly-2.9.0.min.js"></script> -->
 
 </head>
 
@@ -43,6 +45,7 @@
         
     <p>
       Since its first discovery in late 2019, COVID-19 has swept through much of the world. It changed the way we interacted with each other. Thus, for our project, we want to analyze the impact it had on the human population through cases, deaths, and vaccinations. We want to analyze specific locations and timeframes that are of interest to our potential users. Our users will be able to quickly see the USA’s trends with COVID cases and handling, along with a state-by-state analysis of such information. This enables users to have a more specific, reliable, and detailed version of COVID data that they can easily comprehend and trust. 
+      <a href= 'https://github.com/DS4200-S22/final-project-cm2k'></a>
     </p>
 </div>
 
@@ -51,7 +54,7 @@
 <h1>Visualization</h1>
   
 <div class='vis-holder' id="vis-container">
-  <svg id="choropleth-map" width="500" height="600"></svg>
+  <!-- <svg id="choropleth-map" width="500" height="600"></svg> -->
 
 
 </div>
@@ -101,7 +104,7 @@
 </div>
   
   <!-- Scripts at the end avoid need for dealing with async, defer, or onload event handlers -->
-  <script src='lib/d3.v6.1.1/d3.min.js'></script>
+  
   <script src='js/visualization.js'></script>
 </body>
 </html>
