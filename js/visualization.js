@@ -127,6 +127,78 @@ svg2.append("path")
     .attr('d', line);
  })
 
+
+
+
+
+// map ? take 2
+
+ const svg3 = d3.select("#vis-container")
+            .append("svg")
+            .attr("width", width-margin.left-margin.right)
+            .attr("height", height - margin.top - margin.bottom)
+            .attr("viewBox", [0, 0, width, height]);
+
+const path = d3.geoPath();
+const projection = d3.geoAlbersUsa()
+.scale(1300)
+.translate([487.5, 305]);
+
+let data = new Map()
+const colorScale = d3.scaleThreshold()
+  .domain([100000, 1000000, 10000000, 30000000, 100000000, 500000000])
+  .range(d3.schemeBlues[7]); 
+
+Promise.all([
+  d3.json("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson"),
+  d3.csv("https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-states.csv", function(d) {
+      data.set(d.fips, +d.cases)
+  })
+  ]).then(function(loadData){
+      let topo = loadData[0]
+  
+      // Draw the map
+    svg3.append("g")
+      .selectAll("path")
+      .data(topo.features)
+      .join("path")
+        // draw each country
+        .attr("d", d3.geoPath()
+          .projection(projection)
+        )
+        // set the color of each country
+        .attr("fill", function (d) {
+          d.total = data.get(d.id) || 0;
+          return colorScale(d.total);
+        })
+  })
+
+/////////////////////---------------------------------------------------
+//  const svg3 = d3.select("#vis-container")
+//             .append("svg")
+//             .attr("width", width-margin.left-margin.right)
+//             .attr("height", height - margin.top - margin.bottom)
+//             .attr("viewBox", [0, 0, width, height]);
+
+// var format = function(d) {
+//   d = d / 1000000;
+//   return d3.format(',.02f')(d) + 'M';
+// }
+
+// var map = d3.choropleth()
+//     .geofile('/d3-geomap/topojson/countries/USA.json')
+//     .projection(d3.geoAlbersUsa)
+//     .column('2012')
+//     .unitId('fips')
+//     .scale(1000)
+//     .legend(true);
+
+// d3.csv('data/us-states-covid-data.csv').then(data => {
+//     map.draw(d3.select('#map').datum(data));
+// });
+
+
+/////////////////////---------------------------------------------------
 //   d3.csv('data/us-states-covid-data.csv', function(err, rows){
 //     function unpack(rows, key) {
 //         return rows.map(function(row) { return row[key]; });
