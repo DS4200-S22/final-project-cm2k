@@ -127,47 +127,61 @@ svg2.append("path")
     .attr("stroke", "blue")
     .attr("stroke-width", 2)
     .attr("d", line);
- })
 
-//   d3.csv('data/us-states-covid-data.csv', function(err, rows){
-//     function unpack(rows, key) {
-//         return rows.map(function(row) { return row[key]; });
-//     }
+  // d3.csv('data/us-states-covid-data.csv', function(err, rows){
+  //   function unpack(rows, key) {
+  //       return rows.map(function(row) { return row[key]; });
+  //   }
 
-//     const margin = { top: 50, right: 50, bottom: 50, left: 200 };
-//     const width = 900;
-//     const height = 650;
+  //   const margin = { top: 50, right: 50, bottom: 50, left: 200 };
+  //   const width = 900;
+  //   const height = 650;
 
-//     const svg2 = d3.select("#vis-holder")
-//                 .append("svg")
-//                 .attr("width", width - margin.left - margin.right)
-//                 .attr("height", height - margin.top - margin.bottom)
-//                 .attr("viewBox", [0, 0, width, height]); 
+  //   const svg3 = d3.select("#vis-holder")
+  //               .append("svg")
+  //               .attr("width", width - margin.left - margin.right)
+  //               .attr("height", height - margin.top - margin.bottom)
+  //               .attr("viewBox", [0, 0, width, height]); 
 
-//     var data = [{
-//         type: 'choropleth',
-//         locationmode: 'USA-states',
-//         locations: unpack(rows, 'fips'),
-//         z: unpack(rows, 'cases'),
-//         text: unpack(rows, 'state'),
-//         zmin: 0,
-//         zmax: 17000,
-//         colorscale: [
-//             [0, 'rgb(242,240,247)'], [0.2, 'rgb(218,218,235)'],
-//             [0.4, 'rgb(188,189,220)'], [0.6, 'rgb(158,154,200)'],
-//             [0.8, 'rgb(117,107,177)'], [1, 'rgb(84,39,143)']
-//         ],
-//         colorbar: {
-//             title: 'Cases',
-//             thickness: 0.2
-//         },
-//         marker: {
-//             line:{
-//                 color: 'rgb(255,255,255)',
-//                 width: 2
-//             }
-//         }
-//     }];
+  //   var data = [{
+  //       type: 'choropleth',
+  //       locationmode: 'USA-states',
+  //       locations: unpack(rows, 'fips'),
+  //       z: unpack(rows, 'cases'),
+  //       text: unpack(rows, 'state'),
+  //       zmin: 0,
+  //       zmax: 17000,
+  //       colorscale: [
+  //           [0, 'rgb(242,240,247)'], [0.2, 'rgb(218,218,235)'],
+  //           [0.4, 'rgb(188,189,220)'], [0.6, 'rgb(158,154,200)'],
+  //           [0.8, 'rgb(117,107,177)'], [1, 'rgb(84,39,143)']
+  //       ],
+  //       colorbar: {
+  //           title: 'Cases',
+  //           thickness: 0.2
+  //       },
+  //       marker: {
+  //           line:{
+  //               color: 'rgb(255,255,255)',
+  //               width: 2
+  //           }
+  //       }
+  //   }];
+
+  // chloropleth
+
+  var country = d3.geoAlbersUsa()
+            .translate([width / 2, height / 2]).scale([1000]);
+  })
+
+  var geoP = d3.geoPath().projection(null);
+
+  const svg3 = d3
+    .select("#vis-container")
+    .append("svg")
+    .attr("width", width-margin.left-margin.right)
+    .attr("height", height - margin.top - margin.bottom)
+    .attr("viewBox", [0, 0, width, height]);
 
 
 //     var layout = {
