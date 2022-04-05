@@ -17,7 +17,7 @@ const svg1 = d3
 
 // https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-states.csv
 // data/us-states-covid-data.csv
-d3.csv('https://raw.githubusercontent.com/DS4200-S22/final-project-cm2k/main/data/us-states-covid-data.csv',
+d3.csv('data/us-state-covid-abbr.csv',
 function(d){
         return {
             date : d.date,
@@ -71,7 +71,35 @@ svg1.append("g")
     .attr("transform", `translate(0,${height - margin.bottom})`) 
     .call(d3.axisBottom(xScale1)
             .tickFormat(i => data[i][xKey1]))
-    .attr("font-size", '10px'); 
+    .attr("font-size", '10px');
+    
+    
+// Tooltip setup starts
+
+// creates the tooltip
+const tooltip1 = d3.select("#vis-container") 
+                .append("div") 
+                .attr('id', "tooltip1") 
+                .style("opacity", 0) 
+                .attr("class", "tooltip"); 
+
+// Creates an information pop up when a user hovers over each bar with information
+// about that bar 
+const mouseover1 = function(event, d) {
+  tooltip1.html("Total cases: " + d.cases + "<br> Total deaths: " + d.deaths + "<br>") 
+          .style("opacity", 1);  
+}
+
+// Moves the information pop up to where the mouse moves.
+const mousemove1 = function(event, d) {
+  tooltip1.style("left", (event.x)+"px") 
+          .style("top", (event.y + yTooltipOffset) +"px"); 
+}
+
+// When the mouse is not hovering a bar, the pop up disappears.
+const mouseleave1 = function(event, d) { 
+  tooltip1.style("opacity", 0); 
+}
     
 svg1.selectAll(".bar")
   .data(d1)
@@ -81,7 +109,10 @@ svg1.selectAll(".bar")
   .attr("x", (d, i) => xScale1(i)) 
   .attr("y", (d) => yScale1(d[yKey1])) 
   .attr("height", (d) => (height - margin.bottom) - yScale1(d[yKey1]))
-  .attr("width", xScale1.bandwidth()) 
+  .attr("width", xScale1.bandwidth())
+  .on("mouseover", mouseover1) 
+  .on("mousemove", mousemove1)
+  .on("mouseleave", mouseleave1);
 
 // line graph starts
 const svg2 = d3
@@ -187,7 +218,7 @@ svg2.append("path")
       // Load external data and boot
       Promise.all([
       d3.json("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson"),
-      d3.csv("https://raw.githubusercontent.com/DS4200-S22/final-project-cm2k/main/data/us-states-covid-data.csv", function(d) {
+      d3.csv("data/us-state-covid-abbr.csv", function(d) {
           data1.set(d.state, +d.cases)
       })
       
