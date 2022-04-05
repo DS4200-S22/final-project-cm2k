@@ -105,7 +105,7 @@ let yScale2 = d3.scaleLinear()
 
 
 svg2.append("g")
-.attr("transform", `translate(${margin.left}, 0)`)  
+   .attr("transform", `translate(${margin.left}, 0)`)  
    .call(d3.axisLeft(yScale2)) 
    .attr("font-size", '20px'); 
 
@@ -117,17 +117,16 @@ svg2.append("g")
     .attr("font-size", '20px'); 
 
 let line = d3.line()
-            .x(xScale2(data[xKey1]))
-            .y(yScale2(data[yKey1]))
+              .x((d, i) => xScale1(i))
+              .y((d) => yScale1(d[yKey1]))
 
 svg2.append("path")
-    .data(d1)
+    .datum(d1)
     .attr("class", "line")
-    .attr('d', line)
-    .style("fill", "none")
-    .style("stroke", "blue")
-    .style("stroke-width", 2)
-    .attr("transform", "translate(" + 200 + "," + 200 + ")");
+    .attr("fill", "none")
+    .attr("stroke", "blue")
+    .attr("stroke-width", 2)
+    .attr("d", line);
  })
 
 //   d3.csv('data/us-states-covid-data.csv', function(err, rows){
