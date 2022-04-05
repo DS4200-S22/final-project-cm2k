@@ -85,6 +85,8 @@ svg1.selectAll(".bar")
   .attr("height", (d) => (height - margin.bottom) - yScale1(d[yKey1]))
   .attr("width", xScale1.bandwidth()) 
 
+
+// Line graph starts 
 const svg2 = d3
   .select("#vis-container")
   .append("svg")
