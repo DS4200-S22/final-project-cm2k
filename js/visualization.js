@@ -168,7 +168,7 @@ svg2.append("path")
   //       }
   //   }];
 
-  // chloropleth
+  // chloropleth take 1 ----------
 
   const svg3 = d3
     .select("#vis-container")
@@ -210,6 +210,8 @@ svg2.append("path")
               return colorScale(d.total);
             })
       })})
+
+
     
 //-----------------
   // var country = d3.geoAlbersUsa()
