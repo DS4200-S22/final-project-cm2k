@@ -17,7 +17,7 @@ const svg1 = d3
 
 // https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-states.csv
 // data/us-states-covid-data.csv
-d3.csv('https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-states.csv',
+d3.csv('https://raw.githubusercontent.com/DS4200-S22/final-project-cm2k/main/data/us-states-covid-data.csv',
 function(d){
         return {
             date : d.date,
@@ -187,7 +187,7 @@ svg2.append("path")
       // Load external data and boot
       Promise.all([
       d3.json("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson"),
-      d3.csv("https://raw.githubusercontent.com/DS4200-S22/final-project-cm2k/main/data/new_covid.csv", function(d) {
+      d3.csv("https://raw.githubusercontent.com/DS4200-S22/final-project-cm2k/main/data/us-states-covid-data.csv", function(d) {
           data1.set(d.state, +d.cases)
       })
       
