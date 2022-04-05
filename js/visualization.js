@@ -160,13 +160,13 @@ Promise.all([
       // Draw the map
     svg3.append("g")
       .selectAll("path")
-      .data(topo.features)
+      .data(topo.features) // was topo.features before
       .join("path")
-        // draw each country
+        // draw each country - state
         .attr("d", d3.geoPath()
           .projection(projection)
         )
-        // set the color of each country
+        // set the color of each country - state
         .attr("fill", function (d) {
           d.total = data.get(d.id) || 0;
           return colorScale(d.total);
