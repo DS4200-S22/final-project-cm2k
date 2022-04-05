@@ -170,12 +170,6 @@ svg2.append("path")
 
   // chloropleth
 
-  var country = d3.geoAlbersUsa()
-            .translate([width / 2, height / 2]).scale([1000]);
-  })
-
-  var geoP = d3.geoPath().projection(null);
-
   const svg3 = d3
     .select("#vis-container")
     .append("svg")
@@ -183,6 +177,54 @@ svg2.append("path")
     .attr("height", height - margin.top - margin.bottom)
     .attr("viewBox", [0, 0, width, height]);
 
+    const path = d3.geoPath();
+
+    const projection = d3.geoAlbersUsa();
+
+      let data1 = new Map()
+      const colorScale = d3.scaleThreshold()
+        .domain([100000, 1000000, 10000000, 30000000, 100000000, 500000000])
+        .range(d3.schemeBlues[7]);
+      
+      // Load external data and boot
+      Promise.all([
+      d3.json("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson"),
+      d3.csv("https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-states.csv", function(d) {
+          data1.set(+d.fips, +d.cases)
+      })
+      ]).then(function(loadData){
+          let topo = loadData[0]
+      
+          // Draw the map
+        svg3.append("g")
+          .selectAll("path")
+          .data(topo.features)
+          .join("path")
+            // draw each country - state
+            .attr("d", d3.geoPath()
+              .projection(projection)
+            )
+            // set the color of each country - state
+            .attr("fill", function (d) {
+              d.total = data1.get(d.id) || 0;
+              return colorScale(d.total);
+            })
+      })})
+    
+//-----------------
+  // var country = d3.geoAlbersUsa()
+  //           .translate([width / 2, height / 2]).scale([1000]);
+  // })
+
+  // var geoP = d3.geoPath().projection(null);
+
+  // const svg3 = d3
+  //   .select("#vis-container")
+  //   .append("svg")
+  //   .attr("width", width-margin.left-margin.right)
+  //   .attr("height", height - margin.top - margin.bottom)
+  //   .attr("viewBox", [0, 0, width, height]);
+//---------------------------
 
 //     var layout = {
 //         title: 'COVID-19 Cases',
