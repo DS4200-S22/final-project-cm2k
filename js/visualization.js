@@ -27,9 +27,7 @@ function(d){
             deaths : +d.deaths
         };
     }).then(function(data) {
-        for (i = 0; i < 10; i++) {
-            console.log(data[i]);
-        }
+
 
 
 var parser = d3.timeParse("%Y-%m-%d")
@@ -189,7 +187,7 @@ svg2.append("path")
       // Load external data and boot
       Promise.all([
       d3.json("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson"),
-      d3.csv("data/new_covid.csv", function(d) {
+      d3.csv("https://raw.githubusercontent.com/DS4200-S22/final-project-cm2k/main/data/new_covid.csv", function(d) {
           data1.set(d.state, +d.cases)
       })
       
