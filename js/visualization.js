@@ -31,7 +31,7 @@ function(d){
         };
     }).then(function(data) {
 
-
+// passing in data but not specifying specific column you want to print out
 
 var parser = d3.timeParse("%Y-%m-%d")
 
@@ -55,7 +55,7 @@ let maxX1 = parser("2021-10-10");
 
 
 let minY1 = 0;
-let maxY1 = d3.max(d1, function(d) { return d.cases; });
+let maxY1 = d3.max(data, function(d) { return d.cases; });
 
 let xScale1 = d3.scaleBand()
             .domain(d3.range(10))
@@ -76,7 +76,7 @@ svg1.append("g")
 svg1.append("g")
     .attr("transform", `translate(0,${height - margin.bottom})`) 
     .call(d3.axisBottom(xScale1)
-            .tickFormat(i => d1[i][xKey1]))
+            .tickFormat(i => data[i][xKey1]))
     .attr("font-size", '10px');
     
     
@@ -106,9 +106,12 @@ const mousemove1 = function(event, d) {
 const mouseleave1 = function(event, d) { 
   tooltip1.style("opacity", 0); 
 }
-    
+
+// homework 5 - flower column
+// passing in too much data - need to be specific
+// might be able to pass in keys on column header
 svg1.selectAll(".bar")
-  .data(d1)
+  .data(data)
   .enter()
   .append("rect") 
   .attr("class", "bar") 
