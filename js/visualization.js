@@ -129,9 +129,11 @@ const svg2 = d3
   .attr("viewBox", [0, 0, width, height]);
 
 // x-axis
-let xScale2 = d3.scaleLinear()
-            .domain([0, 10])
-            .range([margin.left, width - margin.right]);
+
+let xScale2 = d3.scaleBand()
+            .domain(d3.range(10))
+            .range([margin.left, width - margin.right])
+            .padding(0.1);
 
 // y-axis
 let yScale2 = d3.scaleLinear()
@@ -148,7 +150,7 @@ svg2.append("g")
 svg2.append("g")
     .attr("transform", `translate(0,${height - margin.bottom})`) 
     .call(d3.axisBottom(xScale2)
-    .tickFormat(i => data[i][xKey1]))
+    .tickFormat(i => d1[i][xKey1]))
     .attr("font-size", '20px'); 
 
 let line = d3.line()
@@ -161,6 +163,7 @@ svg2.append("path")
     .attr("fill", "none")
     .attr("stroke", "blue")
     .attr("stroke-width", 2)
+    .attr("transform", "translate(" + 65 + "," + 65 + ")")
     .attr("d", line);
 
   // d3.csv('data/us-states-covid-data.csv', function(err, rows){
