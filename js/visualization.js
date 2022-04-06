@@ -31,6 +31,10 @@ function(d){
         };
     }).then(function(data) {
 
+      for (i = 0; i < 10; i++) {
+        console.log(data[i]);
+      }
+
 // passing in data but not specifying specific column you want to print out
 
 var parser = d3.timeParse("%Y-%m-%d")
@@ -127,7 +131,7 @@ const mouseleave1 = function(event, d) {
 // passing in too much data - need to be specific
 // might be able to pass in keys on column header
 svg1.selectAll(".bar")
-  .data(data)
+  .data(d1)
   .enter()
   .append("rect") 
   .attr("class", "bar") 
@@ -286,50 +290,51 @@ d3.select('#selectButton').on("change", function(event,d) {
 
   // chloropleth take 1 ----------
 
-  const svg3 = d3
-    .select("#vis-container")
-    .append("svg")
-    .attr("width", width-margin.left-margin.right)
-    .attr("height", height - margin.top - margin.bottom)
-    .attr("viewBox", [0, 0, width, height]);
+  // const svg3 = d3
+  //   .select("#vis-container")
+  //   .append("svg")
+  //   .attr("width", width-margin.left-margin.right)
+  //   .attr("height", height - margin.top - margin.bottom)
+  //   .attr("viewBox", [0, 0, width, height]);
 
-    const path = d3.geoPath();
+  //   const path = d3.geoPath();
 
-    const projection = d3.geoAlbersUsa();
+  //   const projection = d3.geoAlbersUsa();
 
-      let data1 = new Map()
-      const colorScale = d3.scaleThreshold()
-        .domain([100000, 1000000, 10000000, 30000000, 100000000, 500000000])
-        .range(d3.schemeBlues[7]);
+  //     let data1 = new Map()
+  //     const colorScale = d3.scaleThreshold()
+  //       .domain([100000, 1000000, 10000000, 30000000, 100000000, 500000000])
+  //       .range(d3.schemeBlues[7]);
       
-      // Load external data and boot
-      Promise.all([
-      d3.json("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson"),
-      d3.csv("data/us-state-covid-abbr.csv", function(d) {
-          // data1.set(d.state, +d.cases)
-          var test = d3.rollup(data, v => d3.sum(v, d => d.cases), d => d.state)
-          console.log(test)
+  //     // Load external data and boot
+  //     Promise.all([
+  //     d3.json("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson"),
+  //     d3.csv("data/us-state-covid-abbr.csv", function(d) {
+  //         // data1.set(d.state, +d.cases)
+  //         var test = d3.rollup(data, v => d3.sum(v, d => +d.cases), d => d.state)
+  //         //console.log(test)
 
-      })
+  //     })
       
-      ]).then(function(loadData){
-          let topo = loadData[0]
+  //     ]).then(function(loadData){
+  //         let topo = loadData[0]
       
-          // Draw the map
-        svg3.append("g")
-          .selectAll("path")
-          .data(topo.features)
-          .join("path")
-            // draw each country - state
-            .attr("d", d3.geoPath()
-              .projection(projection)
-            )
-            // set the color of each country - state
-            .attr("fill", function (d) {
-              d.total = data1.get(d.id) || 0;
-              return colorScale(d.total);
-            })
-      })})
+  //         // Draw the map
+  //       svg3.append("g")
+  //         .selectAll("path")
+  //         .data(topo.features)
+  //         .join("path")
+  //           // draw each country - state
+  //           .attr("d", d3.geoPath()
+  //             .projection(projection)
+  //           )
+  //           // set the color of each country - state
+  //           .attr("fill", function (d) {
+  //             d.total = data1.get(d.id) || 0;
+  //             return colorScale(d.total);
+  //           })
+  //     })
+})
 
 
     
