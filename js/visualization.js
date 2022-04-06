@@ -69,14 +69,31 @@ let yScale1 = d3.scaleLinear()
 svg1.append("g")
    .attr("transform", `translate(${margin.left}, 0)`) 
    .call(d3.axisLeft(yScale1)) 
-   .attr("font-size", '20px'); 
+   .attr("font-size", '20px')
+   // Add y-axis label
+   .call((g) => g.append("text")
+   .attr("x", 0)
+   .attr("y", margin.top - 20)
+   .attr("fill", "black")
+   .attr("text-anchor", "end")
+   .text(yKey1)
+   ); 
 
 // x-axis markings
 svg1.append("g")
     .attr("transform", `translate(0,${height - margin.bottom})`) 
     .call(d3.axisBottom(xScale1)
             .tickFormat(i => d1[i][xKey1]))
-    .attr("font-size", '10px');
+    .attr("font-size", '10px')
+      // Add x-axis label
+      .call((g) => g.append("text")
+      .attr("font-size", '20px')
+      .attr("x", width - margin.right)
+      .attr("y", margin.bottom - 4)
+      .attr("fill", "black")
+      .attr("text-anchor", "end")
+      .text(xKey1) 
+      );
     
     
 // Tooltip setup starts
@@ -160,7 +177,15 @@ let yScale2 = d3.scaleLinear()
 svg2.append("g")
    .attr("transform", `translate(${margin.left}, 0)`)  
    .call(d3.axisLeft(yScale2)) 
-   .attr("font-size", '20px'); 
+   .attr("font-size", '20px')
+   //Add y-axis label
+   .call((g) => g.append("text")
+   .attr("x", 0)
+   .attr("y", margin.top - 20)
+   .attr("fill", "black")
+   .attr("text-anchor", "end")
+   .text(yKey1)
+   ); 
 
 
 svg2.append("g")
