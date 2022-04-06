@@ -43,7 +43,7 @@ const d1 = [{date: "2020-01-21", cases:8500000},
 {date: "2020-01-28", cases:7172002}, {date: "2020-01-29", cases:8500000},
 {date: "2020-01-30", cases:4200000}]
 
-// we want to find the sum of one column's values based on anothre column's values
+// we want to find the sum of one column's values based on another column's values
 // filter between cases and deaths - our data 
 
 xKey1 = "date";
@@ -52,7 +52,6 @@ yKey1 = "cases";
 // let maxX1 = d3.max(data, (d) => {return parser(d[xKey1]);});
 let minX1 = parser("2021-10-03");
 let maxX1 = parser("2021-10-10");
-
 
 let minY1 = 0;
 let maxY1 = d3.max(data, function(d) { return d.cases; });
@@ -70,14 +69,31 @@ let yScale1 = d3.scaleLinear()
 svg1.append("g")
    .attr("transform", `translate(${margin.left}, 0)`) 
    .call(d3.axisLeft(yScale1)) 
-   .attr("font-size", '20px'); 
+   .attr("font-size", '20px')
+   // Add y-axis label
+   .call((g) => g.append("text")
+   .attr("x", 0)
+   .attr("y", margin.top - 20)
+   .attr("fill", "black")
+   .attr("text-anchor", "end")
+   .text(yKey1)
+   ); 
 
 // x-axis markings
 svg1.append("g")
     .attr("transform", `translate(0,${height - margin.bottom})`) 
     .call(d3.axisBottom(xScale1)
-            .tickFormat(i => data[i][xKey1]))
-    .attr("font-size", '10px');
+            .tickFormat(i => d1[i][xKey1]))
+    .attr("font-size", '10px')
+      // Add x-axis label
+      .call((g) => g.append("text")
+      .attr("font-size", '20px')
+      .attr("x", width - margin.right)
+      .attr("y", margin.bottom - 4)
+      .attr("fill", "black")
+      .attr("text-anchor", "end")
+      .text(xKey1) 
+      );
     
     
 // Tooltip setup starts
@@ -164,14 +180,30 @@ let yScale2 = d3.scaleLinear()
 svg2.append("g")
    .attr("transform", `translate(${margin.left}, 0)`)  
    .call(d3.axisLeft(yScale2)) 
-   .attr("font-size", '20px'); 
+   .attr("font-size", '20px')
+   //Add y-axis label
+   .call((g) => g.append("text")
+   .attr("x", 0)
+   .attr("y", margin.top - 20)
+   .attr("fill", "black")
+   .attr("text-anchor", "end")
+   .text(yKey1)
+   ); 
 
 
 svg2.append("g")
     .attr("transform", `translate(0,${height - margin.bottom})`) 
     .call(d3.axisBottom(xScale2)
     .tickFormat(i => d1[i][xKey1]))
-    .attr("font-size", '20px'); 
+    .attr("font-size", '20px')
+    //Adding x-axis label
+      .call((g) => g.append("text")
+      .attr("x", width - margin.right)
+      .attr("y", margin.bottom - 4)
+      .attr("fill", "black")
+      .attr("text-anchor", "end")
+      .text(xKey1) 
+      );
 
 let line = d3.line()
               .x((d, i) => xScale1(i))
@@ -274,7 +306,10 @@ d3.select('#selectButton').on("change", function(event,d) {
       Promise.all([
       d3.json("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson"),
       d3.csv("data/us-state-covid-abbr.csv", function(d) {
-          data1.set(d.state, +d.cases)
+          // data1.set(d.state, +d.cases)
+          var test = d3.rollup(data, v => d3.sum(v, d => d.cases), d => d.state)
+          console.log(test)
+
       })
       
       ]).then(function(loadData){
