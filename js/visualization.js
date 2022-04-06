@@ -1,7 +1,7 @@
 
 
 // Set dimensions and margins for plots 
-const width = 1500; 
+const width = 1200; 
 const height = 450; 
 const margin = {left:50, right:50, bottom:50, top:50}; 
 const yTooltipOffset = 15; 
