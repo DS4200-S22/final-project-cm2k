@@ -129,18 +129,21 @@ const svg2 = d3
   .attr("viewBox", [0, 0, width, height]);
 
 // drop-down menu for line graph
-const allGroup = new Set(data.map(d => d.state)) // can't get cases and deaths to show up for some reason
+const states = new Set(data.map(d => d.state)) // can't get cases and deaths to show up for some reason
+const stateArray = Array.from(states)
 
 d3.select('#selectButton')
 .selectAll('myOptions')
-.data(allGroup)
+.data(stateArray.sort(function (a, b) {
+  return a.localeCompare(b); 
+}))
 .enter()
 .append('option')
 .text(function(d) {return d;})
 .attr('value', function(d) {return d;})
 
 var colorLine = d3.scaleOrdinal()
-                  .domain(allGroup)
+                  .domain(states)
                   .range(d3.schemeSet2);
 
 // x-axis
@@ -186,7 +189,7 @@ svg2.append("path")
     .attr("fill", "none")
     .attr("stroke", "blue")
     .attr("stroke-width", 2)
-    .attr("transform", "translate(" + 65 + "," + 65 + ")")
+    .attr("transform", "translate(" + 60 + "," + 60 + ")")
     .attr("d", line);
 
 // update the selection
