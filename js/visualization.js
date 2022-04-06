@@ -43,7 +43,7 @@ const d1 = [{date: "2020-01-21", cases:8500000},
 {date: "2020-01-28", cases:7172002}, {date: "2020-01-29", cases:8500000},
 {date: "2020-01-30", cases:4200000}]
 
-// we want to find the sum of one column's values based on anothre column's values
+// we want to find the sum of one column's values based on another column's values
 // filter between cases and deaths - our data 
 
 xKey1 = "date";
