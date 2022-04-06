@@ -17,14 +17,17 @@ const svg1 = d3
 
 // https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-states.csv
 // data/us-states-covid-data.csv
-d3.csv('data/us-state-covid-abbr.csv',
+
+// new should be:
+// https://raw.githubusercontent.com/DS4200-S22/final-project-cm2k/main/data/us-state-covid-abbr.csv
+d3.csv('https://raw.githubusercontent.com/DS4200-S22/final-project-cm2k/main/data/us-state-covid-abbr.csv',
 function(d){
         return {
             date : d.date,
             state : d.state,
-            fips : +d.fips,
             cases : +d.cases,
-            deaths : +d.deaths
+            deaths : +d.deaths,
+            abbr_state : d.abbr_state
         };
     }).then(function(data) {
 
