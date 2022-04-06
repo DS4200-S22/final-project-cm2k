@@ -147,7 +147,6 @@ var colorLine = d3.scaleOrdinal()
                   .range(d3.schemeSet2);
 
 // x-axis
-
 let xScale2 = d3.scaleBand()
             .domain(d3.range(10))
             .range([margin.left, width - margin.right])
