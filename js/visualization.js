@@ -38,10 +38,13 @@ var parser = d3.timeParse("%Y-%m-%d")
 // hard code data
 const d1 = [{date: "2020-01-21", cases:8500000},
 {date: "2020-01-22", cases:4200000}, {date: "2020-01-23", cases:6900000},
-{date: "2020-01-24", cases:1100000}, {date: "2020-01-25", cases:1234567},
+{date: "2020-01-24", cases:6500000}, {date: "2020-01-25", cases:7654321},
 {date: "2020-01-26", cases:8765432}, {date: "2020-01-27", cases:6666666},
 {date: "2020-01-28", cases:7172002}, {date: "2020-01-29", cases:8500000},
 {date: "2020-01-30", cases:4200000}]
+
+// we want to find the sum of one column's values based on anothre column's values
+// filter between cases and deaths - our data 
 
 xKey1 = "date";
 yKey1 = "cases";
@@ -51,8 +54,8 @@ let minX1 = parser("2021-10-03");
 let maxX1 = parser("2021-10-10");
 
 
-let minY1 = d3.min(data, function(d) { return d.cases; });
-let maxY1 = d3.max(data, function(d) { return d.cases; });
+let minY1 = 0;
+let maxY1 = d3.max(d1, function(d) { return d.cases; });
 
 let xScale1 = d3.scaleBand()
             .domain(d3.range(10))
@@ -73,7 +76,7 @@ svg1.append("g")
 svg1.append("g")
     .attr("transform", `translate(0,${height - margin.bottom})`) 
     .call(d3.axisBottom(xScale1)
-            .tickFormat(i => data[i][xKey1]))
+            .tickFormat(i => d1[i][xKey1]))
     .attr("font-size", '10px');
     
     
