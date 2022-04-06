@@ -37,11 +37,14 @@ var parser = d3.timeParse("%Y-%m-%d")
 
 // hard code data
 const d1 = [{date: "2020-01-21", cases:8500000},
-{date: "2020-01-21", cases:4200000}, {date: "2020-01-21", cases:6900000},
-{date: "2020-01-21", cases:1100000}, {date: "2020-01-21", cases:1234567},
-{date: "2020-01-21", cases:8765432}, {date: "2020-01-21", cases:6666666},
-{date: "2020-01-21", cases:7172002}, {date: "2020-01-21", cases:8500000},
-{date: "2020-01-21", cases:4200000}]
+{date: "2020-01-22", cases:4200000}, {date: "2020-01-23", cases:6900000},
+{date: "2020-01-24", cases:6500000}, {date: "2020-01-25", cases:7654321},
+{date: "2020-01-26", cases:8765432}, {date: "2020-01-27", cases:6666666},
+{date: "2020-01-28", cases:7172002}, {date: "2020-01-29", cases:8500000},
+{date: "2020-01-30", cases:4200000}]
+
+// we want to find the sum of one column's values based on anothre column's values
+// filter between cases and deaths - our data 
 
 xKey1 = "date";
 yKey1 = "cases";
@@ -51,8 +54,8 @@ let minX1 = parser("2021-10-03");
 let maxX1 = parser("2021-10-10");
 
 
-let minY1 = d3.min(data, function(d) { return d.cases; });
-let maxY1 = d3.max(data, function(d) { return d.cases; });
+let minY1 = 0;
+let maxY1 = d3.max(d1, function(d) { return d.cases; });
 
 let xScale1 = d3.scaleBand()
             .domain(d3.range(10))
@@ -73,7 +76,7 @@ svg1.append("g")
 svg1.append("g")
     .attr("transform", `translate(0,${height - margin.bottom})`) 
     .call(d3.axisBottom(xScale1)
-            .tickFormat(i => data[i][xKey1]))
+            .tickFormat(i => d1[i][xKey1]))
     .attr("font-size", '10px');
     
     
@@ -125,6 +128,21 @@ const svg2 = d3
   .attr("height", height - margin.top - margin.bottom)
   .attr("viewBox", [0, 0, width, height]);
 
+// drop-down menu for line graph
+const allGroup = new Set(data.map(d => d.state)) // can't get cases and deaths to show up for some reason
+
+d3.select('#selectButton')
+.selectAll('myOptions')
+.data(allGroup)
+.enter()
+.append('option')
+.text(function(d) {return d;})
+.attr('value', function(d) {return d;})
+
+var colorLine = d3.scaleOrdinal()
+                  .domain(allGroup)
+                  .range(d3.schemeSet2);
+
 // x-axis
 let xScale2 = d3.scaleLinear()
             .domain([0, 10])
@@ -151,6 +169,14 @@ svg2.append("g")
 let line = d3.line()
               .x((d, i) => xScale1(i))
               .y((d) => yScale1(d[yKey1]))
+        //       .datum(data.filter(function(d) {return d.cases}))
+        //       .attr("d", d3.line()
+        //       .x(function(d) {return x(d.year)})
+        //       .y(function(d) {return y(+d.n)}))
+        //       .attr("stroke", function(d){ return myColor("valueA") })
+        // .style("stroke-width", 4)
+        // .style("fill", "none")
+              
 
 svg2.append("path")
     .datum(d1)
@@ -159,6 +185,24 @@ svg2.append("path")
     .attr("stroke", "blue")
     .attr("stroke-width", 2)
     .attr("d", line);
+
+// update the selection
+function update(selectedGroup) {
+  const dataFiltered = data.filter(function(d) {return d.cases == selectedGroup})
+  line.datum(dataFiltered)
+      .transition()
+      .duration(1000)
+      .attr("d", d3.line()
+        .x(function(d) {return x(d.date)})
+        .y(function (d) {return y(+d.n)})
+      )
+      .attr("stroke", function(d) {return myColor(selectedGroup)})
+}
+
+d3.select('#selectButton').on("change", function(event,d) {
+  const selectedOption = d3.select(this).property("value")
+  update(selectedOption)
+})
 
   // d3.csv('data/us-states-covid-data.csv', function(err, rows){
   //   function unpack(rows, key) {
