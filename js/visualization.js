@@ -53,7 +53,6 @@ yKey1 = "cases";
 let minX1 = parser("2021-10-03");
 let maxX1 = parser("2021-10-10");
 
-
 let minY1 = 0;
 let maxY1 = d3.max(d1, function(d) { return d.cases; });
 
@@ -168,7 +167,15 @@ svg2.append("g")
     .attr("transform", `translate(0,${height - margin.bottom})`) 
     .call(d3.axisBottom(xScale2)
     .tickFormat(i => d1[i][xKey1]))
-    .attr("font-size", '20px'); 
+    .attr("font-size", '20px')
+    //Adding x-axis label
+      .call((g) => g.append("text")
+      .attr("x", width - margin.right)
+      .attr("y", margin.bottom - 4)
+      .attr("fill", "black")
+      .attr("text-anchor", "end")
+      .text(xKey1) 
+      );
 
 let line = d3.line()
               .x((d, i) => xScale1(i))
