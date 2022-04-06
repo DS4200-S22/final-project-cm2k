@@ -34,11 +34,11 @@ var parser = d3.timeParse("%Y-%m-%d")
 
 // hard code data
 const d1 = [{date: "2020-01-21", cases:8500000},
-{date: "2020-01-21", cases:4200000}, {date: "2020-01-21", cases:6900000},
-{date: "2020-01-21", cases:1100000}, {date: "2020-01-21", cases:1234567},
-{date: "2020-01-21", cases:8765432}, {date: "2020-01-21", cases:6666666},
-{date: "2020-01-21", cases:7172002}, {date: "2020-01-21", cases:8500000},
-{date: "2020-01-21", cases:4200000}]
+{date: "2020-01-22", cases:4200000}, {date: "2020-01-23", cases:6900000},
+{date: "2020-01-24", cases:1100000}, {date: "2020-01-25", cases:1234567},
+{date: "2020-01-26", cases:8765432}, {date: "2020-01-27", cases:6666666},
+{date: "2020-01-28", cases:7172002}, {date: "2020-01-29", cases:8500000},
+{date: "2020-01-30", cases:4200000}]
 
 xKey1 = "date";
 yKey1 = "cases";
