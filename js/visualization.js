@@ -278,7 +278,7 @@ const tempMapData = [{state_abbr: "MA", cases:100},
 
     const projection = d3.geoAlbersUsa();
 
-      let data2 = new Map()
+      let data1 = new Map()
       const colorScale = d3.scaleThreshold()
         .domain([100000, 1000000, 10000000, 30000000, 100000000, 500000000])
         .range(d3.schemeBlues[7]);
@@ -287,7 +287,7 @@ const tempMapData = [{state_abbr: "MA", cases:100},
       Promise.all([
       d3.json("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson"),
       d3.csv("data/us-state-covid-abbr.csv", function(d) {
-          data2.set(d.state, +d.cases)
+          data1.set(d.state, +d.cases)
           // var test = d3.rollup(data, v => d3.sum(v, d => +d.cases), d => d.state)
           //console.log(test)
 
@@ -307,7 +307,7 @@ const tempMapData = [{state_abbr: "MA", cases:100},
             )
             // set color of each state
             .attr("fill", function (d) {
-              d.total = data2.get(d.id) || 0;
+              d.total = data1.get(d.id) || 0;
               return colorScale(d.total);
             })
       })
