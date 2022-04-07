@@ -14,6 +14,10 @@ const svg1 = d3
   .attr("height", height - margin.top - margin.bottom)
   .attr("viewBox", [0, 0, width, height]);
 
+const format = d3.timeFormat("%b %d, %Y");
+const parser = d3.timeParse("%Y-%m-%d");
+// var test = format(parser("2021-03-21"));
+// console.log(test)
 
 // https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-states.csv
 // data/us-states-covid-data.csv
@@ -23,7 +27,7 @@ const svg1 = d3
 d3.csv('https://raw.githubusercontent.com/DS4200-S22/final-project-cm2k/main/data/us-state-covid-abbr.csv',
 function(d){
         return {
-            date : d.date,
+            date : new Date(format(parser(d.date))),
             state : d.state,
             cases : +d.cases,
             deaths : +d.deaths,
@@ -31,22 +35,16 @@ function(d){
         };
     }).then(function(data) {
 
-      // for (let i = 0; i < 1000; i++) {
-      //   console.log(data[i]['date'])
-      // }
-
       var wash = data.filter(d => d.abbr_state === 'WA');
       // for (let i = 0; i < 797; i++) {
-      //   console.log(wash[i]['cases']);
+      //   console.log(wash[i]['date']);
       // }
 
 // passing in data but not specifying specific column you want to print out
 
 var test = d3.rollup(data, v => d3.sum(v, d => +d.cases), d => d.state)
-console.log(test);
-var format = d3.time.format("%b-%Y");
+var format = d3.timeFormat("%b %d, %Y");
 var parser = d3.timeParse("%Y-%m-%d")
-//console.log(format(new Date(2011, 0, 1)));
 
 // hard code data
 const d1 = [{date: "2020-01-21", cases:8500000},
@@ -61,19 +59,17 @@ const d1 = [{date: "2020-01-21", cases:8500000},
 
 xKey1 = "date";
 yKey1 = "cases";
-// let minX1 = d3.min(data, (d) => {return parser(d[xKey1]);});
-// let maxX1 = d3.max(data, (d) => {return parser(d[xKey1]);});
-let minX1 = format(parser("2021-10-03"));
-let maxX1 = parser("2021-10-10");
-console.log(minX1 + " " + maxX1);
 
 let minY1 = 0;
-let maxY1 = d3.max(d1, function(d) { return d.cases; });
+let maxY1 = d3.max(wash, function(d) { return d.cases; });
+// let maxY1 = Math.max(...test.values());
 
-let xScale1 = d3.scaleBand()
-            .domain(d3.range(10))
-            .range([margin.left, width - margin.right])
-            .padding(0.1);
+const dates = new Set(data.map(d => d.date))
+const dateArray = Array.from(dates)
+
+let xScale1 = d3.scaleTime()
+            .domain(d3.extent(dateArray))
+            .range([margin.left, width - margin.right]);
             
 let yScale1 = d3.scaleLinear()
             .domain([minY1,maxY1])
@@ -97,7 +93,7 @@ svg1.append("g")
 svg1.append("g")
     .attr("transform", `translate(0,${height - margin.bottom})`) 
     .call(d3.axisBottom(xScale1)
-            .tickFormat(i => d1[i][xKey1]))
+            .tickFormat(format))
     .attr("font-size", '10px')
       // Add x-axis label
       .call((g) => g.append("text")
@@ -141,14 +137,14 @@ const mouseleave1 = function(event, d) {
 // passing in too much data - need to be specific
 // might be able to pass in keys on column header
 svg1.selectAll(".bar")
-  .data(d1)
+  .data(wash)
   .enter()
   .append("rect") 
   .attr("class", "bar") 
-  .attr("x", (d, i) => xScale1(i)) 
+  .attr("x", (d, i) => xScale1(i[xKey1])) 
   .attr("y", (d) => yScale1(d[yKey1])) 
   .attr("height", (d) => (height - margin.bottom) - yScale1(d[yKey1]))
-  .attr("width", xScale1.bandwidth())
+  .attr("width", 100)
   .on("mouseover", mouseover1) 
   .on("mousemove", mousemove1)
   .on("mouseleave", mouseleave1);
