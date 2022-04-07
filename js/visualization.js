@@ -31,15 +31,22 @@ function(d){
         };
     }).then(function(data) {
 
-      for (let i = 0; i < 1000; i++) {
-        console.log(data[i]['date'])
-      }
+      // for (let i = 0; i < 1000; i++) {
+      //   console.log(data[i]['date'])
+      // }
+
+      var wash = data.filter(d => d.abbr_state === 'WA');
+      // for (let i = 0; i < 797; i++) {
+      //   console.log(wash[i]['cases']);
+      // }
 
 // passing in data but not specifying specific column you want to print out
 
 var test = d3.rollup(data, v => d3.sum(v, d => +d.cases), d => d.state)
 console.log(test);
+var format = d3.time.format("%b-%Y");
 var parser = d3.timeParse("%Y-%m-%d")
+//console.log(format(new Date(2011, 0, 1)));
 
 // hard code data
 const d1 = [{date: "2020-01-21", cases:8500000},
@@ -56,8 +63,9 @@ xKey1 = "date";
 yKey1 = "cases";
 // let minX1 = d3.min(data, (d) => {return parser(d[xKey1]);});
 // let maxX1 = d3.max(data, (d) => {return parser(d[xKey1]);});
-let minX1 = parser("2021-10-03");
+let minX1 = format(parser("2021-10-03"));
 let maxX1 = parser("2021-10-10");
+console.log(minX1 + " " + maxX1);
 
 let minY1 = 0;
 let maxY1 = d3.max(d1, function(d) { return d.cases; });
