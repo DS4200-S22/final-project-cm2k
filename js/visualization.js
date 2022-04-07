@@ -19,10 +19,7 @@ const parser = d3.timeParse("%Y-%m-%d");
 // var test = format(parser("2021-03-21"));
 // console.log(test)
 
-// https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-states.csv
-// data/us-states-covid-data.csv
-
-// new should be:
+// data/us-state-covid-abbr.csv
 // https://raw.githubusercontent.com/DS4200-S22/final-project-cm2k/main/data/us-state-covid-abbr.csv
 d3.csv('https://raw.githubusercontent.com/DS4200-S22/final-project-cm2k/main/data/us-state-covid-abbr.csv',
 function(d){
@@ -36,9 +33,7 @@ function(d){
     }).then(function(data) {
 
       var wash = data.filter(d => d.abbr_state === 'WA');
-      // for (let i = 0; i < 797; i++) {
-      //   console.log(wash[i]['date']);
-      // }
+
 
 // passing in data but not specifying specific column you want to print out
 
