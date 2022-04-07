@@ -31,8 +31,14 @@ function(d){
         };
     }).then(function(data) {
 
+      for (let i = 0; i < 1000; i++) {
+        console.log(data[i]['date'])
+      }
+
 // passing in data but not specifying specific column you want to print out
 
+var test = d3.rollup(data, v => d3.sum(v, d => +d.cases), d => d.state)
+console.log(test);
 var parser = d3.timeParse("%Y-%m-%d")
 
 // hard code data
@@ -54,7 +60,7 @@ let minX1 = parser("2021-10-03");
 let maxX1 = parser("2021-10-10");
 
 let minY1 = 0;
-let maxY1 = d3.max(data, function(d) { return d.cases; });
+let maxY1 = d3.max(d1, function(d) { return d.cases; });
 
 let xScale1 = d3.scaleBand()
             .domain(d3.range(10))
