@@ -256,7 +256,7 @@ d3.select('#selectButton').on("change", function(event,d) {
 
 
 
-  // chloropleth
+// chloropleth -----------------------------------------
 
   // hard code data
 const tempMapData = [{state_abbr: "MA", cases:100},
@@ -306,11 +306,11 @@ const tempMapData = [{state_abbr: "MA", cases:100},
           .selectAll("path")
           .data(topo.features)
           .join("path")
-            // draw each country - state
+            // draw each state
             .attr("d", d3.geoPath()
               .projection(projection)
             )
-            // set the color of each country - state
+            // set color of each state
             .attr("fill", function (d) {
               d.total = data2.get(d.id) || 0;
               return colorScale(d.total);
