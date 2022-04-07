@@ -16,8 +16,6 @@ const svg1 = d3
 
 const format = d3.timeFormat("%b %d, %Y");
 const parser = d3.timeParse("%Y-%m-%d");
-// var test = format(parser("2021-03-21"));
-// console.log(test)
 
 // https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-states.csv
 // data/us-states-covid-data.csv
@@ -34,11 +32,6 @@ function(d){
             abbr_state : d.abbr_state
         };
     }).then(function(data) {
-
-      var wash = data.filter(d => d.abbr_state === 'WA');
-      // for (let i = 0; i < 797; i++) {
-      //   console.log(wash[i]['date']);
-      // }
 
 // passing in data but not specifying specific column you want to print out
 
@@ -61,15 +54,21 @@ xKey1 = "date";
 yKey1 = "cases";
 
 let minY1 = 0;
-let maxY1 = d3.max(wash, function(d) { return d.cases; });
+let maxY1 = d3.max(d1, function(d) { return d.cases; });
+// let maxY1 = d3.max(wash, function(d) { return d.cases; });
 // let maxY1 = Math.max(...test.values());
 
 const dates = new Set(data.map(d => d.date))
 const dateArray = Array.from(dates)
 
-let xScale1 = d3.scaleTime()
-            .domain(d3.extent(dateArray))
-            .range([margin.left, width - margin.right]);
+let xScale1 = d3.scaleBand()
+            .domain(d3.range(10))
+            .range([margin.left, width - margin.right])
+            .padding(0.1);
+
+// let xScale1 = d3.scaleTime()
+//             .domain(d3.extent(dateArray))
+//             .range([margin.left, width - margin.right]);
             
 let yScale1 = d3.scaleLinear()
             .domain([minY1,maxY1])
@@ -93,7 +92,8 @@ svg1.append("g")
 svg1.append("g")
     .attr("transform", `translate(0,${height - margin.bottom})`) 
     .call(d3.axisBottom(xScale1)
-            .tickFormat(format))
+            .tickFormat(i => d1[i][xKey1]))
+            //.tickFormat(format))
     .attr("font-size", '10px')
       // Add x-axis label
       .call((g) => g.append("text")
@@ -137,12 +137,16 @@ const mouseleave1 = function(event, d) {
 // passing in too much data - need to be specific
 // might be able to pass in keys on column header
 svg1.selectAll(".bar")
-  .data(wash)
+  .data(d1)
   .enter()
   .append("rect") 
   .attr("class", "bar") 
-  .attr("x", (d, i) => xScale1(i[xKey1])) 
+  .attr("x", (d, i) => xScale1(i)) 
   .attr("y", (d) => yScale1(d[yKey1])) 
+  // .attr("x", function(wash) {return xScale1(format(wash.date))})
+  // .attr("y", function(wash) { return yScale1(wash.cases); })
+  // .attr("x", (wash, i) => xScale1(format(i[xKey1])))
+  // .attr("y", function(wash) { return yScale1(wash.cases); })
   .attr("height", (d) => (height - margin.bottom) - yScale1(d[yKey1]))
   .attr("width", 100)
   .on("mouseover", mouseover1) 
