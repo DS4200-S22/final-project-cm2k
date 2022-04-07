@@ -1,4 +1,13 @@
 
+/*
+Unfortunately, we've tried for several hours to get our actual data to work,
+but it still does not. We have been to office hours a few times, and have also
+played around with rollups and grouping for some time, but it still doesn't work.
+
+All other aspects of our graphs should work once we are able to solve the grouping
+issues we are having. 
+*/
+
 
 // Set dimensions and margins for plots 
 const width = 1200; 
