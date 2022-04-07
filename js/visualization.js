@@ -312,7 +312,7 @@ const tempMapData = [{state_abbr: "MA", cases:100},
             )
             // set the color of each country - state
             .attr("fill", function (d) {
-              d.total = data1.get(d.id) || 0;
+              d.total = data2.get(d.id) || 0;
               return colorScale(d.total);
             })
       })
