@@ -31,10 +31,6 @@ function(d){
         };
     }).then(function(data) {
 
-      for (i = 0; i < 10; i++) {
-        console.log(data[i]);
-      }
-
 // passing in data but not specifying specific column you want to print out
 
 var parser = d3.timeParse("%Y-%m-%d")
