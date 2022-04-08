@@ -310,9 +310,11 @@ const tempMapData = [{state_abbr: "MA", cases:100},
       
       ]).then(function(loadData){
           let topo = loadData[0]
-
+          let cov = loadData[1]
+          console.log(cov)
+ 
           console.log("Hello World")
-          console.log(loadData)
+          // console.log(loadData)
           
       
           // Draw the map
