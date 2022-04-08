@@ -311,7 +311,9 @@ const tempMapData = [{state_abbr: "MA", cases:100},
       ]).then(function(loadData){
           let topo = loadData[0]
 
+          console.log("Hello World")
           console.log(loadData)
+          
       
           // Draw the map
         svg3.append("g")
