@@ -317,7 +317,6 @@ const tempMapData = [{state_abbr: "MA", cases:100},
           data1.set(d.state, +d.cases)
           // var test = d3.rollup(data, v => d3.sum(v, d => +d.cases), d => d.state)
           // console.log(test)
-
       })
       
       ]).then(function(loadData){
@@ -328,7 +327,11 @@ const tempMapData = [{state_abbr: "MA", cases:100},
           // console.log("Hello World")
           // console.log(loadData)
           
-      
+          // call d3 roll up here
+
+          // new var w d3 roll up
+          // change data1.get() to new var here
+        
           // Draw the map
         svg3.append("g")
           .selectAll("path")
