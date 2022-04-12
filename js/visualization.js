@@ -48,12 +48,12 @@ var format = d3.timeFormat("%b %d, %Y");
 var parser = d3.timeParse("%Y-%m-%d")
 
 // hard code data
-const d1 = [{date: "2020-01-21", cases:8500000},
-{date: "2020-01-22", cases:4200000}, {date: "2020-01-23", cases:6900000},
-{date: "2020-01-24", cases:6500000}, {date: "2020-01-25", cases:7654321},
-{date: "2020-01-26", cases:8765432}, {date: "2020-01-27", cases:6666666},
-{date: "2020-01-28", cases:7172002}, {date: "2020-01-29", cases:8500000},
-{date: "2020-01-30", cases:4200000}]
+const d1 = [{date: "2020-01-21", cases:8500000, deaths:3500000},
+{date: "2020-01-22", cases:4200000, deaths:123456}, {date: "2020-01-23", cases:6900000, deaths:7200000},
+{date: "2020-01-24", cases:6500000, deaths:3567856}, {date: "2020-01-25", cases:7654321, deaths:2500000},
+{date: "2020-01-26", cases:8765432, deaths:2500000}, {date: "2020-01-27", cases:6666666, deaths:7777777},
+{date: "2020-01-28", cases:7172002, deaths:3506450}, {date: "2020-01-29", cases:8500000, deaths:3275534},
+{date: "2020-01-30", cases:4200000, deaths:1200000}]
 
 // we want to find the sum of one column's values based on another column's values
 // filter between cases and deaths - our data 
@@ -315,7 +315,7 @@ const tempMapData = [{state_abbr: "MA", cases:100},
       d3.json("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson"),
       d3.csv("data/us-state-covid-abbr.csv", function(d) {
           data1.set(d.state, +d.cases)
-          var test = d3.rollup(data, v => d3.sum(v, d => +d.cases), d => d.state)
+          // var test = d3.rollup(data, v => d3.sum(v, d => +d.cases), d => d.state)
           // console.log(test)
 
       })
@@ -323,9 +323,9 @@ const tempMapData = [{state_abbr: "MA", cases:100},
       ]).then(function(loadData){
           let topo = loadData[0]
           let cov = loadData[1]
-          console.log(cov)
+          // console.log(cov)
  
-          console.log("Hello World")
+          // console.log("Hello World")
           // console.log(loadData)
           
       
