@@ -47,6 +47,13 @@ var test = d3.rollup(data, v => d3.sum(v, d => +d.cases), d => d.state)
 var format = d3.timeFormat("%b %d, %Y");
 var parser = d3.timeParse("%Y-%m-%d")
 
+
+let casesByDate = d3.rollups(data, v => d3.sum(v, j => j.cases), d=> d.date.getYear(), d => d.date.getMonth());//, d => d.state);
+console.log(casesByDate)
+
+// let casesByDate = d3.group(data, d => d.date);
+// console.log(casesByDate)
+
 // hard code data
 const d1 = [{date: "2020-01-21", cases:8500000, deaths:3500000},
 {date: "2020-01-22", cases:4200000, deaths:123456}, {date: "2020-01-23", cases:6900000, deaths:7200000},
@@ -57,6 +64,21 @@ const d1 = [{date: "2020-01-21", cases:8500000, deaths:3500000},
 
 // we want to find the sum of one column's values based on another column's values
 // filter between cases and deaths - our data 
+
+/**
+ * The var d1 attempts to read in the 3d array as data. I dont' know how to make that into usable data tho
+ */
+
+
+// var d1 = casesByDate.map(function (d) {
+//   var obj = {};
+//   d.forEach(function (e,i) {
+//     obj[e] = i;
+//   });
+//   return obj
+// });
+
+// console.log(d1)
 
 xKey1 = "date";
 yKey1 = "cases";
@@ -260,7 +282,7 @@ svg2.append("path")
 
 // update the selection
 function update(selectedGroup) {
-  const dataFiltered = data.filter(function(d) {return d.cases == selectedGroup})
+  const dataFiltered = data.filter(function(d) {return d.state == selectedGroup})
   line.datum(dataFiltered)
       .transition()
       .duration(1000)
