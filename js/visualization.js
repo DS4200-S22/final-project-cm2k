@@ -327,7 +327,7 @@ const tempMapData = [{state_abbr: "MA", cases:100},
           // console.log("Hello World")
           // console.log(loadData)
           
-          // call d3 roll up here
+          var newData = d3.rollup(cov, v => d3.sum(v, d => +d.cases), d => d.state)
 
           // new var w d3 roll up
           // change data1.get() to new var here
@@ -343,7 +343,7 @@ const tempMapData = [{state_abbr: "MA", cases:100},
             )
             // set color of each state
             .attr("fill", function (d) {
-              d.total = data1.get(d.id) || 0;
+              d.total = newData.get(d.id) || 0;
               return colorScale(d.total);
             })
       })
