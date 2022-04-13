@@ -48,11 +48,13 @@ var format = d3.timeFormat("%b %d, %Y");
 var parser = d3.timeParse("%Y-%m-%d")
 
 
-let casesByDate = d3.rollups(data, v => d3.sum(v, j => j.cases), d=> d.date.getYear(), d => d.date.getMonth());//, d => d.state);
+let casesByDate = d3.rollups(data, v => d3.sum(v, j => j.cases), d => d.date.getYear(), d => d.date.getMonth());//, d => d.state);
 console.log(casesByDate)
 
-// let casesByDate = d3.group(data, d => d.date);
-// console.log(casesByDate)
+let deathsByDate = d3.rollups(data, v => d3.sum(v, j => j.deaths), d => d.date.getYear(), d => d.date.getMonth());
+
+let washingtonCasesByDate = d3.rollups(wash, v => d3.sum(v, j => j.cases), d => d.date.getYear(), d => d.date.getMonth());
+console.log(washingtonCasesByDate)
 
 // hard code data
 const d1 = [{date: "2020-01-21", cases:8500000, deaths:3500000},
@@ -78,7 +80,9 @@ const d1 = [{date: "2020-01-21", cases:8500000, deaths:3500000},
 //   return obj
 // });
 
-// console.log(d1)
+console.log(casesByDate[0]) // gives [120, Array(12)] --> (2020, Array(months in 2020))
+console.log(casesByDate[0][1][0]) // gives [0, 41] --> (Janurary 2020, 41 total cases)
+console.log(casesByDate[0][1][0][1]) // gives 41 (total number of cases in Janurary 2020)
 
 xKey1 = "date";
 yKey1 = "cases";
