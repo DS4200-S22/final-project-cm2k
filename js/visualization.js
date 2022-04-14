@@ -40,7 +40,7 @@ function(d){
     }).then(function(data) {
 
       var wash = data.filter(d => d.abbr_state === 'WA');
-      console.log(wash);
+      console.log(wash.length);
 // passing in data but not specifying specific column you want to print out
 
 var test = d3.rollup(data, v => d3.sum(v, d => +d.cases), d => d.state)
@@ -49,16 +49,16 @@ var parser = d3.timeParse("%Y-%m-%d")
 
 
 let casesByDate = d3.rollups(data, v => d3.sum(v, j => j.cases), d => d.date.toString()); // this is an array of arrays
-console.log(casesByDate)
+//console.log(casesByDate)
 casesByDate = d3.merge(casesByDate); // this breaks the array of arrays. Creates one giant array that's like [date, cases, date2, cases2]
-console.log(casesByDate)
+//console.log(casesByDate)
 
 let deathsByDate = d3.rollups(data, v => d3.sum(v, j => j.deaths), d => d.date.toString());
-console.log(deathsByDate)
+//console.log(deathsByDate)
 
 
 let washingtonCasesByDate = d3.rollups(wash, v => d3.sum(v, j => j.cases), d => d.date.getYear(), d => d.date.getMonth());
-console.log(washingtonCasesByDate)
+//console.log(washingtonCasesByDate)
 
 // hard code data
 // const d1 = [{date: "2020-01-21", cases:8500000, deaths:3500000},
@@ -69,17 +69,11 @@ console.log(washingtonCasesByDate)
 // {date: "2020-01-30", cases:4200000, deaths:1200000}]
 // var casesByDatesMap = d3.map();
 
-
-
-
-
 xKey1 = "date";
 yKey1 = "cases";
 
 let minY1 = 0;
-let maxY1 = d3.max(wash, function(d) { return d.cases; });
-// let maxY1 = d3.max(wash, function(d) { return d.cases; });
-// let maxY1 = Math.max(...test.values());
+let maxY1 = d3.max(wash, function(wash) { return wash.cases; });
 
 const dates = new Set(data.map(d => d.date))
 const dateArray = Array.from(dates)
@@ -90,9 +84,15 @@ const dateArray = Array.from(dates)
 //             .padding(0.1);
 
 // debug here
-let xScale1 = d3.scaleTime()
-            .domain(d3.extent(dateArray))
-            .range([margin.left, width - margin.right]);
+
+let xScale1 = d3.scaleBand()
+            .domain(d3.range(dateArray.length/50))
+            .range([margin.left, width - margin.right])
+            .padding(0.1);
+
+// let xScale1 = d3.scaleTime()
+//             .domain(d3.extent(dateArray))
+//             .range([margin.left, width - margin.right]);
             
 let yScale1 = d3.scaleLinear()
             .domain([minY1,maxY1])
@@ -116,17 +116,17 @@ svg1.append("g")
 svg1.append("g")
     .attr("transform", `translate(0,${height - margin.bottom})`) 
     .call(d3.axisBottom(xScale1)
-            //.tickFormat(i => wash[i][xKey1]))
-            .tickFormat(format))
-    .attr("font-size", '10px')
+            .tickFormat(i => format(wash[i][xKey1]))
+            .tickValues(xScale1.domain().filter(function(d,i){ return !(i%60)})))
+    .attr("font-size", '8px')
       // Add x-axis label
       .call((g) => g.append("text")
-      .attr("font-size", '20px')
-      .attr("x", width - margin.right)
-      .attr("y", margin.bottom - 4)
-      .attr("fill", "black")
-      .attr("text-anchor", "end")
-      .text(xKey1) 
+                    .attr("font-size", '20px')
+                    .attr("x", width - margin.right)
+                    .attr("y", margin.bottom - 4)
+                    .attr("fill", "black")
+                    .attr("text-anchor", "end")
+                    .text(xKey1) 
       );
     
     
@@ -173,15 +173,15 @@ svg1.selectAll(".bar")
   // add translate/transform function
   .attr("x", function(wash, i) {
     // getting passed into xScale1 - undefined
-    // 
-    //console.log(format(wash[xKey1]));
-
     // returns correspodning pixel value
     // potential issue with scale function
-    return xScale1(format(wash[xKey1]))})
-  .attr("y", function(wash) { return yScale1(wash.cases); })
-  .attr("height", (d) => (height - margin.bottom) - yScale1(d[yKey1]))
+    return xScale1(i)})
+    .attr("y", function(wash) { 
+    return yScale1(wash["cases"]); })
+  .attr("height", (wash) => (height - margin.bottom) - yScale1(wash["cases"]))
+  // .attr("width", xScale1.bandwidth())
   .attr("width", 100)
+  //.attr("transform", "translate(" + 1050 + "," + 0 + ")")
   .on("mouseover", mouseover1) 
   .on("mousemove", mousemove1)
   .on("mouseleave", mouseleave1);
