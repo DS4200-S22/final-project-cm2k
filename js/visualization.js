@@ -338,9 +338,14 @@ const tempMapData = [{state_abbr: "MA", cases:100},
         .range(d3.schemeBlues[7]);
       
       // Load external data and boot
+      // temp map data
+      // https://raw.githubusercontent.com/DS4200-S22/final-project-cm2k/main/data/map_cases_covid
+      // 
+      // og:
+      // data/us-state-covid-abbr.csv
       Promise.all([
       d3.json("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson"),
-      d3.csv("data/us-state-covid-abbr.csv", function(d) {
+      d3.csv("https://raw.githubusercontent.com/DS4200-S22/final-project-cm2k/main/data/map_cases_covid", function(d) {
           data1.set(d.state, +d.cases)
           // var test = d3.rollup(data, v => d3.sum(v, d => +d.cases), d => d.state)
           // console.log(test)
@@ -370,7 +375,7 @@ const tempMapData = [{state_abbr: "MA", cases:100},
             )
             // set color of each state
             .attr("fill", function (d) {
-              d.total = newData.get(d.id) || 0;
+              d.total = data1.get(d.id) || 0;
               return colorScale(d.total);
             })
       })
