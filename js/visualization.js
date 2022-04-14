@@ -84,6 +84,7 @@ console.log(casesByDate[0]) // gives [120, Array(12)] --> (2020, Array(months in
 console.log(casesByDate[0][1][0]) // gives [0, 41] --> (Janurary 2020, 41 total cases)
 console.log(casesByDate[0][1][0][1]) // gives 41 (total number of cases in Janurary 2020)
 
+
 xKey1 = "date";
 yKey1 = "cases";
 
