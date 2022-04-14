@@ -346,7 +346,7 @@ const tempMapData = [{state_abbr: "MA", cases:100},
       Promise.all([
       d3.json("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson"),
       d3.csv("https://raw.githubusercontent.com/DS4200-S22/final-project-cm2k/main/data/map_cases_covid", function(d) {
-          data1.set(d.abbr_state, +d.cases)
+          data1.set(d.state, +d.cases)
           // var test = d3.rollup(data, v => d3.sum(v, d => +d.cases), d => d.state)
           // console.log(test)
       })
