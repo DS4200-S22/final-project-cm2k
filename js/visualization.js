@@ -48,10 +48,12 @@ var format = d3.timeFormat("%b %d, %Y");
 var parser = d3.timeParse("%Y-%m-%d")
 
 
-let casesByDate = d3.rollups(data, v => d3.sum(v, j => j.cases), d => d.date.getYear(), d => d.date.getMonth());//, d => d.state);
+let casesByDate = d3.rollups(data, v => d3.sum(v, j => j.cases), d => d.date.toString());
 console.log(casesByDate)
 
-let deathsByDate = d3.rollups(data, v => d3.sum(v, j => j.deaths), d => d.date.getYear(), d => d.date.getMonth());
+let deathsByDate = d3.rollups(data, v => d3.sum(v, j => j.deaths), d => d.date.toString());
+console.log(deathsByDate)
+
 
 let washingtonCasesByDate = d3.rollups(wash, v => d3.sum(v, j => j.cases), d => d.date.getYear(), d => d.date.getMonth());
 console.log(washingtonCasesByDate)
