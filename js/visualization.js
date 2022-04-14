@@ -48,7 +48,9 @@ var format = d3.timeFormat("%b %d, %Y");
 var parser = d3.timeParse("%Y-%m-%d")
 
 
-let casesByDate = d3.rollups(data, v => d3.sum(v, j => j.cases), d => d.date.toString());
+let casesByDate = d3.rollups(data, v => d3.sum(v, j => j.cases), d => d.date.toString()); // this is an array of arrays
+console.log(casesByDate)
+casesByDate = d3.merge(casesByDate); // this breaks the array of arrays. Creates one giant array that's like [date, cases, date2, cases2]
 console.log(casesByDate)
 
 let deathsByDate = d3.rollups(data, v => d3.sum(v, j => j.deaths), d => d.date.toString());
@@ -59,32 +61,16 @@ let washingtonCasesByDate = d3.rollups(wash, v => d3.sum(v, j => j.cases), d => 
 console.log(washingtonCasesByDate)
 
 // hard code data
-const d1 = [{date: "2020-01-21", cases:8500000, deaths:3500000},
-{date: "2020-01-22", cases:4200000, deaths:123456}, {date: "2020-01-23", cases:6900000, deaths:7200000},
-{date: "2020-01-24", cases:6500000, deaths:3567856}, {date: "2020-01-25", cases:7654321, deaths:2500000},
-{date: "2020-01-26", cases:8765432, deaths:2500000}, {date: "2020-01-27", cases:6666666, deaths:7777777},
-{date: "2020-01-28", cases:7172002, deaths:3506450}, {date: "2020-01-29", cases:8500000, deaths:3275534},
-{date: "2020-01-30", cases:4200000, deaths:1200000}]
-
-// we want to find the sum of one column's values based on another column's values
-// filter between cases and deaths - our data 
-
-/**
- * The var d1 attempts to read in the 3d array as data. I dont' know how to make that into usable data tho
- */
+// const d1 = [{date: "2020-01-21", cases:8500000, deaths:3500000},
+// {date: "2020-01-22", cases:4200000, deaths:123456}, {date: "2020-01-23", cases:6900000, deaths:7200000},
+// {date: "2020-01-24", cases:6500000, deaths:3567856}, {date: "2020-01-25", cases:7654321, deaths:2500000},
+// {date: "2020-01-26", cases:8765432, deaths:2500000}, {date: "2020-01-27", cases:6666666, deaths:7777777},
+// {date: "2020-01-28", cases:7172002, deaths:3506450}, {date: "2020-01-29", cases:8500000, deaths:3275534},
+// {date: "2020-01-30", cases:4200000, deaths:1200000}]
+// var casesByDatesMap = d3.map();
 
 
-// var d1 = casesByDate.map(function (d) {
-//   var obj = {};
-//   d.forEach(function (e,i) {
-//     obj[e] = i;
-//   });
-//   return obj
-// });
 
-console.log(casesByDate[0]) // gives [120, Array(12)] --> (2020, Array(months in 2020))
-console.log(casesByDate[0][1][0]) // gives [0, 41] --> (Janurary 2020, 41 total cases)
-console.log(casesByDate[0][1][0][1]) // gives 41 (total number of cases in Janurary 2020)
 
 
 xKey1 = "date";
