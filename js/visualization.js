@@ -189,16 +189,14 @@ var colorLine = d3.scaleOrdinal()
                   .domain(states)
                   .range(d3.schemeSet2);
 
-// x-axis
 let xScale2 = d3.scaleBand()
-            .domain(d3.range(10))
-            .range([margin.left, width - margin.right])
-            .padding(0.1);
-
-// y-axis
+                  .domain(d3.range(dateArray.length/53))
+                  .range([margin.left, width - margin.right])
+                  .padding(0.1);
+                  
 let yScale2 = d3.scaleLinear()
-            .domain([minY1,maxY1])
-            .range([height-margin.bottom,margin.top]); 
+                  .domain([minY1,maxY1])
+                  .range([height-margin.bottom,margin.top]); 
 
 
 svg2.append("g")
@@ -218,8 +216,9 @@ svg2.append("g")
 svg2.append("g")
     .attr("transform", `translate(0,${height - margin.bottom})`) 
     .call(d3.axisBottom(xScale2)
-    .tickFormat(i => d1[i][xKey1]))
-    .attr("font-size", '20px')
+    .tickFormat(i => format(bama[i][xKey1]))
+    .tickValues(xScale2.domain().filter(function(d,i){ return !(i%80)})))
+    .attr("font-size", '8px')
     //Adding x-axis label
       .call((g) => g.append("text")
       .attr("x", width - margin.right)
@@ -242,12 +241,12 @@ let line = d3.line()
               
 
 svg2.append("path")
-    .datum(d1)
+    .datum(bama)
     .attr("class", "line")
     .attr("fill", "none")
     .attr("stroke", "blue")
     .attr("stroke-width", 2)
-    .attr("transform", "translate(" + 60 + "," + 60 + ")")
+    //.attr("transform", "translate(" + 60 + "," + 60 + ")")
     .attr("d", line);
 
 // update the selection
