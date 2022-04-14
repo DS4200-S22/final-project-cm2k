@@ -1,14 +1,4 @@
 
-/*
-Unfortunately, we've tried for several hours to get our actual data to work,
-but it still does not. We have been to office hours a few times, and have also
-played around with rollups and grouping for some time, but it still doesn't work.
-
-All other aspects of our graphs should work once we are able to solve the grouping
-issues we are having. 
-*/
-
-
 // Set dimensions and margins for plots 
 const width = 1200; 
 const height = 450; 
@@ -41,7 +31,6 @@ function(d){
 
       var bama = data.filter(d => d.abbr_state === 'AL');
       var wash = data.filter(d => d.abbr_state === 'WA');
-      console.log(bama.length);
 // passing in data but not specifying specific column you want to print out
 
 var test = d3.rollup(data, v => d3.sum(v, d => +d.cases), d => d.state)
@@ -79,12 +68,12 @@ let maxY1 = d3.max(bama, function(bama) { return bama.cases; });
 const dates = new Set(data.map(d => d.date))
 const dateArray = Array.from(dates)
 
-let xScale1 = d3.scaleBand()
+const xScale1 = d3.scaleBand()
             .domain(d3.range(dateArray.length/53))
             .range([margin.left, width - margin.right])
             .padding(0.1);
             
-let yScale1 = d3.scaleLinear()
+const yScale1 = d3.scaleLinear()
             .domain([minY1,maxY1])
             .range([height-margin.bottom,margin.top]); 
 
@@ -162,6 +151,14 @@ svg1.selectAll(".bar")
   .on("mouseover", mouseover1) 
   .on("mousemove", mousemove1)
   .on("mouseleave", mouseleave1);
+
+// brushing the bar graph
+brushB = d3.brushX()
+          .extent([[margin.left, margin.bottom], 
+            [width - margin.right, height - margin.top]])
+          .on("end", updateBar)
+
+svg1.call(brushB)
 
 // line graph starts
 const svg2 = d3
@@ -248,6 +245,14 @@ svg2.append("path")
     .attr("stroke-width", 2)
     //.attr("transform", "translate(" + 60 + "," + 60 + ")")
     .attr("d", line);
+
+// brushing the bar graph
+brushL = d3.brushX()
+          .extent([[margin.left, margin.bottom], 
+            [width - margin.right, height - margin.top]])
+          .on("end", updateLine)
+
+svg2.call(brushL)
 
 // update the selection
 function update(selectedGroup) {
@@ -343,4 +348,57 @@ const tempMapData = [{state_abbr: "MA", cases:100},
               return colorScale(d.total);
             })
       })
+
+
+  // FUNCTIONS TO UPDATE VIA BRUSHING
+  function updateBar(brushEvent, d) {
+    let newDates = brushEvent.selection;
+
+    let xTime1 = d3.scaleTime()
+                    .domain(d3.extent(dateArray))
+                    .range([margin.left, width - margin.right]);
+
+    let early = xTime1.invert(newDates[0])
+    let latest = xTime1.invert(newDates[1])
+
+    console.log(early)
+    console.log(latest)
+
+    var newRange = getDates(early, latest)
+    console.log(newRange)
+
+    /*
+
+    let xScale1 = d3.scaleBand()
+                .domain(d3.range(dateArray.length/53))
+                .range([margin.left, width - margin.right])
+                .padding(0.1);
+
+    */
+
+  }
+
+  function updateLine(brushEvent, d) {
+    let newDates = brushEvent.selection;
+
+    let xTime1 = d3.scaleTime()
+                    .domain(d3.extent(dateArray))
+                    .range([margin.left, width - margin.right]);
+
+    let early = xTime1.invert(newDates[0])
+    let latest = xTime1.invert(newDates[1])
+
+    console.log(early)
+    console.log(latest)
+
+    var newRange = getDates(early, latest)
+  }
+
+  function getDates(start, end) {
+    for(var dates=[], dt = new Date(start); dt <= new Date(end); dt.setDate(dt.getDate()+1)){
+      dates.push(new Date(dt));
+  }
+  return dates;
+};
+
 })
