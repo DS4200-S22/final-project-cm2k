@@ -27,13 +27,11 @@ d3.csv('https://raw.githubusercontent.com/DS4200-S22/final-project-cm2k/main/dat
     };
   }).then(function (data) {
 
+    // starting data to display on the graphs.
     let bama = data.filter(d => d.abbr_state === 'AL');
     let wash = data.filter(d => d.abbr_state === 'WA');
-    // passing in data but not specifying specific column you want to print out
 
-    let test = d3.rollup(data, v => d3.sum(v, d => +d.cases), d => d.state)
     let format = d3.timeFormat("%b %d, %Y");
-    let parser = d3.timeParse("%Y-%m-%d")
 
 
     let casesByDate = d3.rollups(data, v => d3.sum(v, j => j.cases), d => d.date.toString()); // this is an array of arrays
@@ -44,20 +42,24 @@ d3.csv('https://raw.githubusercontent.com/DS4200-S22/final-project-cm2k/main/dat
 
     let washingtonCasesByDate = d3.rollups(wash, v => d3.sum(v, j => j.cases), d => d.date.getYear(), d => d.date.getMonth());
 
+    // axis names
     xKey1 = "date";
     yKey1 = "cases";
 
+    // variables to help aid creation of the axis.
     let minY1 = 0;
     let maxY1 = d3.max(bama, function (bama) { return bama.cases; });
 
     const dates = new Set(data.map(d => d.date))
     const dateArray = Array.from(dates)
 
+    // x-axis variable
     const xScale1 = d3.scaleBand()
       .domain(d3.range(dateArray.length / 53))
       .range([margin.left, width - margin.right])
       .padding(0.1);
 
+    // y-axis variable
     const yScale1 = d3.scaleLinear()
       .domain([minY1, maxY1])
       .range([height - margin.bottom, margin.top]);
@@ -121,6 +123,7 @@ d3.csv('https://raw.githubusercontent.com/DS4200-S22/final-project-cm2k/main/dat
       tooltip1.style("opacity", 0);
     }
 
+    // add bars
     svg1.selectAll(".bar")
       .data(bama)
       .enter()
@@ -173,16 +176,19 @@ d3.csv('https://raw.githubusercontent.com/DS4200-S22/final-project-cm2k/main/dat
       .domain(states)
       .range(d3.schemeSet2);
 
+    // create x-axis for line graph
     let xScale2 = d3.scaleBand()
       .domain(d3.range(dateArray.length / 53))
       .range([margin.left, width - margin.right])
       .padding(0.1);
 
+    // create y-axis for line graph
     let yScale2 = d3.scaleLinear()
       .domain([minY1, maxY1])
       .range([height - margin.bottom, margin.top]);
 
 
+    // add y-axis
     svg2.append("g")
       .attr("transform", `translate(${margin.left}, 0)`)
       .call(d3.axisLeft(yScale2))
@@ -196,7 +202,7 @@ d3.csv('https://raw.githubusercontent.com/DS4200-S22/final-project-cm2k/main/dat
         .text(yKey1)
       );
 
-
+    // add x-axis
     svg2.append("g")
       .attr("transform", `translate(0,${height - margin.bottom})`)
       .call(d3.axisBottom(xScale2)
@@ -216,6 +222,7 @@ d3.csv('https://raw.githubusercontent.com/DS4200-S22/final-project-cm2k/main/dat
       .x((d, i) => xScale1(i))
       .y((d) => yScale1(d[yKey1]))
 
+    // add line graph
     svg2.append("path")
       .datum(bama)
       .attr("class", "line")
@@ -228,7 +235,7 @@ d3.csv('https://raw.githubusercontent.com/DS4200-S22/final-project-cm2k/main/dat
     brushL = d3.brushX()
       .extent([[margin.left, margin.bottom],
       [width - margin.right, height - margin.top]])
-      .on("end", updateLine)
+      .on("end", updateBar)
 
     svg2.call(brushL)
 
@@ -322,19 +329,7 @@ d3.csv('https://raw.githubusercontent.com/DS4200-S22/final-project-cm2k/main/dat
     function updateBar(brushEvent, d) {
       let newDates = brushEvent.selection;
 
-      let xTime1 = d3.scaleTime()
-        .domain(d3.extent(dateArray))
-        .range([margin.left, width - margin.right]);
-
-      let early = xTime1.invert(newDates[0])
-      let latest = xTime1.invert(newDates[1])
-
-      let newRange = getDates(early, latest)
-    }
-
-    function updateLine(brushEvent, d) {
-      let newDates = brushEvent.selection;
-
+      // create a scaleTime axis to help us work with our scaleBand axis.
       let xTime1 = d3.scaleTime()
         .domain(d3.extent(dateArray))
         .range([margin.left, width - margin.right]);
