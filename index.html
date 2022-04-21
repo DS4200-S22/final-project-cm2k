@@ -15,9 +15,6 @@
 
   <script src='lib/d3.v6.1.1/d3.min.js'></script>
 
-  <!-- Plotly -->
-  <!-- <script src="https://cdn.plot.ly/plotly-2.9.0.min.js"></script> -->
-
 </head>
 
 <!-- Main page content -->
@@ -62,7 +59,6 @@
   <h1>Visualization</h1>
   <select id="selectButton"></select>
   <div class='vis-holder' id="vis-container">
-    <!-- <svg id="choropleth-map" width="500" height="600"></svg> -->
 
 
   </div>
@@ -87,8 +83,31 @@
     <h1>Visualization Explanation</h1>
 
     <p>
-      Replace with an explanation of your visualization and linked presentation slides. <strong>Be sure to delete this
-        filler text before your final submission!</strong>
+      The intention of the COVID-19 Dashboard is to provide users with a way to easily see information about COVID-19
+      statistics,
+      particularly in the area of cases and deaths over time. Users can see which locations in the United States have
+      the highest COVID rates, summarize the amount of cases in the 2 years since the pandemic started, and see any
+      trends in case of COVID-19
+      that may or may not have to do with the geographical location of an uptick in cases.
+    </p>
+    <p>
+      This visualization relies on a bar graph, line graph, and chloropleth to visually convey the data that is being
+      shown to
+      the user. In terms of interactivity, the user is allowed to select what state/territory to examine COVID cases in,
+      as well as
+      zoom in on the graph via brushing and linking to examine a certain date range of COVID cases more closely. Users
+      may hover over each bar
+      or point in the line to see a number representing the total amount of COVID cases in the selected state up until
+      that day.
+    </p>
+    <p>
+      Below these two graphs, we intended for there to be a chloropleth, with darker colored states representing more
+      COVID cases overall.
+      The date would be changed by a slider, and would update the map of the U.S. over time with the amount of COVID
+      cases per state.
+      If the user hovers over the state, it would show fast facts about the state (ex. name, date of first COVID
+      infection) and display
+      the total amount of COVID cases in that state.
     </p>
 
     <h1>Research Paper</h1>
